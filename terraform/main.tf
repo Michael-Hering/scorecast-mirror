@@ -23,7 +23,7 @@ resource "google_compute_instance" "default" {
   }
 
   // Make sure flask is installed on all new instances for later steps
-  metadata_startup_script = "sudo yum update; sudo yum install -yq build-essential python-pip rsync; pip install flask"
+  metadata_startup_script = "sudo yum update; sudo yum install -yq build-essential python-pip rsync"
 
   network_interface {
     network = "default"
@@ -32,5 +32,6 @@ resource "google_compute_instance" "default" {
       // Include this section to give the VM an external ip address
     }
   }
+
 }
 
