@@ -12,7 +12,7 @@ resource "random_id" "instance_id" {
 
 // A single Google Cloud Engine instance
 resource "google_compute_instance" "default" {
-  name         = "scorecast-vm-${random_id.instance_id.hex}"
+  name         = "scorecast-${random_id.instance_id.hex}"
   machine_type = "f1-micro"
   zone         = "us-central1-a"
 
@@ -32,6 +32,10 @@ resource "google_compute_instance" "default" {
       // Include this section to give the VM an external ip address
     }
   }
+}
 
+// A variable for extracting the external ip of the instance
+output "ip" {
+ value = "${google_compute_instance.default.network_interface.0.access_config.0.nat_ip}"
 }
 
