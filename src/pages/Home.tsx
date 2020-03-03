@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
-import FixtureList from '../FixtureList';
+import FixtureList from "../components/FixtureList";
 
 const HomeContainer = styled.div`
-	background-color: hotpink;
+	color: blue;
 `;
 
 export const Home = () => {
-	return <FixtureList />;
+	return <HomeContainer>Welcome to Scorecast!</HomeContainer>;
 };
