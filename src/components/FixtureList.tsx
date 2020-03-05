@@ -1,35 +1,25 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Fixture from "./Fixture";
 import Matches from "./1920Fixtures";
 import styled from "@emotion/styled";
 
-interface FixtureListProps {}
 
 const FixtureListDiv = styled.div`
 	padding-top: 10rem;
 	padding-bottom: 10rem;
 `;
 
-export default class FixtureList extends React.Component<FixtureListProps> {
-	fixtures: any[] = [];
-	event_id = 269;
+function FixtureList() {
 
-	constructor(props: FixtureListProps) {
-		super(props);
-		this.fixtures = this.fixtures.concat(this.getFixtureData());
-		// console.log(this.getFixtureData());
+	var event_id = 269;
 
-		console.log(this.fixtures);
-	}
+	var calendar = Matches["vcalendar"];
+	var events = calendar[0]["vevent"].slice(event_id + 1, event_id + 9);
 
-	getFixtureData(): any[] {
-		var calendar = Matches["vcalendar"];
-		var events = calendar[0]["vevent"];
+	const [fixtures, setFixtures] = useState(events);
 
-		return events.slice(this.event_id + 1, this.event_id + 9);
-	}
-
-	createFixture(fixture: any, i: any) {
+	const createFixture = (fixture: any, i: any) => {
+		// console.log(fixture);
 		var teams = fixture["summary"].split(" v ");
 		var location = fixture["location"];
 		var timeStart = fixture["dtstart"];
@@ -45,19 +35,13 @@ export default class FixtureList extends React.Component<FixtureListProps> {
 		);
 	}
 
-	// createFixtures() {
-	//     return this.fixtures.map(fixture => {
-	//         return this.createFixture(fixture);
-	//     })
-	// }
-
-	render() {
-		return (
-			<FixtureListDiv>
-				{this.fixtures.map((fixture, i) => {
-					return this.createFixture(fixture, i);
-				})}
-			</FixtureListDiv>
-		);
-	}
+	return (
+		<FixtureListDiv>
+			{fixtures.map((fixture: any, i: any) => {
+				return createFixture(fixture, i);
+			})}
+		</FixtureListDiv>
+	);
 }
+
+export default FixtureList;
