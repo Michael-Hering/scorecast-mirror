@@ -1,6 +1,6 @@
 // Configure the Google Cloud provider
 provider "google" {
-  credentials = file("/Users/ianmatheson/Documents/Scorecast-a931a57b6bc8.json")
+  credentials = file("./gcp-credentials.json")
   project     = "scorecast-269923"
   region      = "us-west1"
 }
@@ -31,6 +31,16 @@ resource "google_compute_instance" "default" {
     access_config {
       // Include this section to give the VM an external ip address
     }
+  }
+}
+
+resource "google_sql_database_instance" "instance" {
+  name             = "scorecast-sqlinstance-${random_id.instance_id.hex}"
+  database_version = "POSTGRES_11"
+  region           = "us-central1"
+
+  settings {
+    tier = "db-f1-micro"
   }
 }
 
