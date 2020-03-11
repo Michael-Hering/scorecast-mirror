@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import styled from "@emotion/styled";
 
 /**
@@ -96,48 +96,36 @@ const FixtureText = styled.p`
     font-size: 14px;
 `;
 
-export default class Fixture extends React.Component<FixtureProps, FixtureState> {
+function Fixture(props: FixtureProps) {
 
-    constructor(props: FixtureProps) {
-        super(props);
+    var dateString = "" + props.timeStart;
+    var year = dateString.substring(0,4);
+    var month = dateString.substring(4,6);
+    var day = dateString.substring(6,8);
 
-        var dateString = "" + props.timeStart;
-        var year = dateString.substring(0,4);
-        var month = dateString.substring(4,6);
-        var day = dateString.substring(6,8);
+    const [date, setDate] = useState(new Date(+year, +month - 1, +day));
+    const [homeTeam, setHomeTeam] = useState(props.homeTeam);
+    const [awayTeam, setAwayTeam] = useState(props.awayTeam);
+    const [location, setLocation] = useState(props.location);
+    const [listOpen, setListOpen] = useState(false);
 
-        this.state = {
-            listOpen: false,
-            homeTeam: props.homeTeam, 
-            awayTeam: props.awayTeam,
-            location: props.location,
-            date: new Date(+year, +month - 1, +day)
-        };
-    }
-
-    toggleList() {
-        this.setState(prevState => ({
-            listOpen: !prevState.listOpen
-        }));
-    }
-    
-    render() {
-        return (
-            <Container onClick={() => this.toggleList()}>
-                <FixtureDisplay>
-                    <FixtureP><Badge src={process.env.PUBLIC_URL + '/pl-badges/' + this.state.homeTeam + '.png'} alt="home team badge"/>  - <Badge src={process.env.PUBLIC_URL + '/pl-badges/' + this.state.awayTeam + '.png'} alt="away team badge"/></FixtureP>
-                </FixtureDisplay>
-                <div className="break"></div>
-                <FixtureInfo>
-                    <FixtureText>{this.state.date.toDateString()} - {this.state.location}</FixtureText>
-                </FixtureInfo>
-                <Break/>
-                <FixtureInfoList>
-                    {this.state.listOpen && <FixtureInfoUl>
-                        <li className="fi-list-item">Hello</li>
-                    </FixtureInfoUl>}
-                </FixtureInfoList>
-            </Container>
-        );
-    }
+    return (
+        <Container onClick={() => setListOpen(!listOpen)}>
+            <FixtureDisplay>
+                <FixtureP><Badge src={process.env.PUBLIC_URL + '/pl-badges/' + homeTeam + '.png'} alt="home team badge"/>  - <Badge src={process.env.PUBLIC_URL + '/pl-badges/' + awayTeam + '.png'} alt="away team badge"/></FixtureP>
+            </FixtureDisplay>
+            <div className="break"></div>
+            <FixtureInfo>
+                <FixtureText>{date.toDateString()} - {location}</FixtureText>
+            </FixtureInfo>
+            <Break/>
+            <FixtureInfoList>
+                {listOpen && <FixtureInfoUl>
+                    <li className="fi-list-item">Hello</li>
+                </FixtureInfoUl>}
+            </FixtureInfoList>
+        </Container>
+    );
 }
+
+export default Fixture;

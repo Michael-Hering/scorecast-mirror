@@ -12,7 +12,7 @@ resource "random_id" "instance_id" {
 
 // A single Google Cloud Engine instance
 resource "google_compute_instance" "default" {
-  name         = "scorecast-${random_id.instance_id.hex}"
+  name         = "scorecast"
   machine_type = "f1-micro"
   zone         = "us-central1-a"
 
