@@ -5,11 +5,6 @@ provider "google" {
   region      = "us-west1"
 }
 
-// Terraform plugin for creating random ids
-resource "random_id" "instance_id" {
-  byte_length = 8
-}
-
 // A single Google Cloud Engine instance
 resource "google_compute_instance" "default" {
   name         = "scorecast"
@@ -31,6 +26,17 @@ resource "google_compute_instance" "default" {
     access_config {
       // Include this section to give the VM an external ip address
     }
+  }
+}
+
+// Single Google Cloud Database instance
+resource "google_sql_database_instance" "instance" {
+  name             = "scorecast-postgres"
+  database_version = "POSTGRES_11"
+  region           = "us-central1"
+
+  settings {
+    tier = "db-f1-micro"
   }
 }
 
