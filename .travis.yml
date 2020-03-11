@@ -12,5 +12,4 @@ before_install:
   - yarn install
 
 script:
-  - cd react-app
   - yarn test
