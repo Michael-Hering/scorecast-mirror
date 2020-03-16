@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   react-app:
-    container_name: react-app
     build: './react-app'
+    image: michaelhering/scorecast-react-app
     ports: 
       - "80:80"
