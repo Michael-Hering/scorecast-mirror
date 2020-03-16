@@ -8,23 +8,26 @@ access_token_secret =  ""
 consumer_key =  ""
 consumer_secret =  ""
 
-class TweetListener(StreamListener, topic):
+class TweetListener(StreamListener):
   """
   A class that Overrides tweepy.StreamListener to add login to on_data
 
   """
+  def __init__(self, topic):
+    super().__init__()
+    self.topic = topic
 
   def on_data(self, data):
-      producer.send_messages(self.topic, data.encode('utf-8'))
-      print (data)
+      # producer.send_messages(self.topic, data.encode('utf-8'))
+      print ("Topic: " + self.topic + ", Data: " + data)
       return True
 
   def on_error(self, status):
       print (status)
 
 # Set up kafka client
-kafka = KafkaClient("localhost:9092")
-producer = SimpleProducer(kafka)
+# kafka = KafkaClient("localhost:9092")
+# producer = SimpleProducer(kafka)
 
 # OAuth with twitter
 auth = OAuthHandler(consumer_key, consumer_secret)
@@ -58,4 +61,4 @@ teams = [
 for team in teams:
   listener = TweetListener(team)
   stream = Stream(auth, listener)
-  stream.filter(track = team)
+  stream.filter(track = team, is_async=True)
