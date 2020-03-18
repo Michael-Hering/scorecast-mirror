@@ -52,15 +52,20 @@ resource "google_container_cluster" "primary" {
   initial_node_count       = 1
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
+resource "google_container_node_pool" "primary_nodes" {
   name       = "scorecast-node-pool"
-  location   = "us-central1"
+  location   = "us-central1-a"
   cluster    = google_container_cluster.primary.name
-  node_count = 1
+  initial_node_count = 1
+
+  autoscaling {
+    min_node_count=0
+    max_node_count=1
+  }
 
   node_config {
-    preemptible  = true
-    machine_type = "f1-micro"
+    preemptible  = false
+    machine_type = "g1-small"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -77,12 +82,22 @@ resource "kubernetes_deployment" "react-app" {
   spec {
     replicas = 1
 
+    selector {
+      match_labels = {
+        app = "react"
+      }
+    }
+
     template {
-      metadata {}
-      
+      metadata {
+        labels = {
+          app = "react"
+        }
+      }
+
       spec {
         container {
-          image = "scorecast-react-app:latest"
+          image = "michaelhering/scorecast-react-app:latest"
           name  = "react-app-container"
         }
       }
