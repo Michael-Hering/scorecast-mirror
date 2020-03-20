@@ -57,6 +57,9 @@ resource "google_container_node_pool" "primary_nodes" {
   location   = "us-central1-a"
   cluster    = google_container_cluster.primary.name
   initial_node_count = 1
+  depends_on = [
+    google_container_cluster.primary,
+  ]
 
   autoscaling {
     min_node_count=0
@@ -71,37 +74,6 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-  }
-}
-
-resource "kubernetes_deployment" "react-app" {
-  metadata {
-    name = "react-app-deployment"
-  }
-
-  spec {
-    replicas = 1
-
-    selector {
-      match_labels = {
-        app = "react"
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          app = "react"
-        }
-      }
-
-      spec {
-        container {
-          image = "michaelhering/scorecast-react-app:latest"
-          name  = "react-app-container"
-        }
-      }
-    }
   }
 }
 
