@@ -43,7 +43,7 @@ resource "google_sql_database_instance" "instance" {
 // Single Google Kubernetes Engine instsance
 resource "google_container_cluster" "primary" {
   name     = "scorecast-gke-cluster"
-  location = "us-central1"
+  location = "us-central1-a"
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -68,9 +68,10 @@ resource "google_container_node_pool" "primary_nodes" {
 
   node_config {
     preemptible  = false
-    machine_type = "g1-small"
+    machine_type = "n1-standard-1"
 
     oauth_scopes = [
+      "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
