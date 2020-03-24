@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/CUBigDataClass/scorecast.svg?token=pQwb96NqdCVumD2nAxxk&branch=master)](https://travis-ci.com/CUBigDataClass/scorecast)
 # Scorecast
 
 ## About
