@@ -5,3 +5,7 @@ services:
     build: './react-app'
     ports: 
       - "80:80"
+
+  data:
+    container_name: data
+    build: './data'
