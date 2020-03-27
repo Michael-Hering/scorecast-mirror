@@ -1,4 +1,4 @@
 FROM python:3
 COPY /scripts /
-RUN pip install tweepy kafka numpy pandas scipy
+RUN pip install tweepy kafka-python numpy pandas scipy
 CMD ["python", "./tweetProducer.py"]
