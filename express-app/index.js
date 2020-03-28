@@ -1,6 +1,9 @@
+// Dependencies 
 const express = require('express');
 const app = express();
 const users = require('./routes/users');
+
+//-----------------------------------
 
 app.use('/api/users', users);
 
@@ -18,7 +21,7 @@ app.get('/courses/:id' , (req, res) => {
 
 // PORT
 // Can set environment variable
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 app.listen(port, () => {
     console.log(`listening on ${port}`);
