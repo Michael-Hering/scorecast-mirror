@@ -104,10 +104,7 @@ negFile = "data/negative-train.txt"
 #training the data
 freqs, posFreqs, negFreqs = training(posFile, negFile)
 # output = probFinder(testFile, freqs, posFreqs, negFreqs)
-# ----- OUTPUTTING TO FILE ---- #
-with open('Matheson-Ian-assgn3-out.txt', 'w') as text_file:
-	for i in range(len(output)):
-		text_file.write("%s\n" % output[i])
+
 
 
 
