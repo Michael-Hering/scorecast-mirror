@@ -7,8 +7,8 @@ import { Dashboard } from "./pages/Dashboard";
 export const Routes = () => {
 	return (
 		<Switch>
-			<Route exact={true} path="/home" component={Home} />
-			<Route exact={true} path="/" component={Dashboard} />
+			<Route exact={true} path="/" component={Home} />
+			<Route exact={true} path="/dashboard" component={Dashboard} />
 			<Route component={PageNotFound} />
 		</Switch>
 	);
