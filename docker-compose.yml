@@ -2,6 +2,6 @@ version: "3.7"
 services:
   react-app:
     build: './react-app'
-    image: michaelhering/scorecast-react-app
+    image: gcr.io/scorecast-269923/scorecast-react-app
     ports: 
       - "80:80"
