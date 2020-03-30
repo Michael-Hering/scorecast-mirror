@@ -1,7 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
-import FixtureList from "../components/FixtureList";
+
+const DashboardContainer = styled.div`
+	width: 100%;
+	height: 100%;
+`;
 
 export const Dashboard = () => {
-	return <FixtureList />;
+	return (
+		<DashboardContainer>
+			Welcome to the Scorecast Dashboard
+		</DashboardContainer>
+	);
 };
