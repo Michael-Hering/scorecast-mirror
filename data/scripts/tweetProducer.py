@@ -1,14 +1,10 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from kafka import SimpleProducer, KafkaClient
+import time
+import kafka
 import json
 import os
-
-access_token = os.environ["TWITTER_ACCESS_TOKEN"]
-access_token_secret =  os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
-consumer_key =  os.environ["TWITTER_CONSUMER_KEY"]
-consumer_secret =  os.environ["TWITTER_CONSUMER_SECRET"]
 
 class TweetListener(StreamListener):
   """
@@ -19,8 +15,8 @@ class TweetListener(StreamListener):
       res = json.loads(data)
       if (res["retweeted"] == "false"):
         topic = cityByAccount[res["user"]["id_str"]]
-        # producer.send_messages(topic, data.encode('utf-8'))
-        print ("Topic: " + topic + ", Tweet: " + res["text"])
+        producer.send(topic, data.encode('utf-8'))
+        print ("Produced: {Topic: " + topic + ", Tweet: " + res["text"] + "}", flush=True)
       return True
 
   def on_error(self, status):
@@ -69,9 +65,34 @@ for key in accountsByCity:
     cityByAccount[id] = key
     allAccounts.append(id)
 
-# Set up kafka client
-# kafka = KafkaClient("localhost:9092")
-# producer = SimpleProducer(kafka)
+# Set up kafka producer
+connected = False
+while not connected:
+  try:
+    producer = kafka.KafkaProducer(bootstrap_servers=['localhost:9092'])
+    print("Producer connected to kafka", flush=True)
+    connected = True
+  except kafka.errors.NoBrokersAvailable:
+    print("Waiting for kafka broker to be available...", flush=True)
+    time.sleep(1)
+    connected = False
+  except ValueError:
+    print("Waiting for kafka broker to start...", flush=True)
+    connected = False
+  except:
+    raise Exception("Something else went wrong")
+
+# Get credentials form the environment
+hasCredentials = False
+while not hasCredentials:
+  try:
+    access_token = os.environ["TWITTER_ACCESS_TOKEN"]
+    access_token_secret =  os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
+    consumer_key =  os.environ["TWITTER_CONSUMER_KEY"]
+    consumer_secret =  os.environ["TWITTER_CONSUMER_SECRET"]
+  except:
+    print("Twitter credentials not set. Retrying in 10 seconds...", flush=True)
+    time.sleep(10)
 
 # OAuth with twitter
 auth = OAuthHandler(consumer_key, consumer_secret)
