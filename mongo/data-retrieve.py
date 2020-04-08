@@ -12,9 +12,11 @@ def parseObj(obj, daily=False):
     ret['windspeed'] = obj['wind_speed']
     rain = 'rain' in obj.keys()
     if(rain and daily):
+        # if('1h' in ret['rain'].keys()):
         ret['rain'] = obj['rain']
     elif(rain and not daily):
-        ret['rain'] = obj['rain']['1h']
+        if('1h' in obj['rain'].keys()):
+            ret['rain'] = obj['rain']['1h']
 
     if(daily):
         ret['max_temp'] = obj['temp']['max']
@@ -22,7 +24,7 @@ def parseObj(obj, daily=False):
     else:
         ret['temp'] = obj['temp']
 
-    print(ret)
+    # print(ret)
 
     return ret
 
@@ -37,34 +39,46 @@ def grabData(key):
     with open('./cities.json') as f:
         cities = json.load(f)
 
-    city = cities[0]
-    url = 'https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}'.format(city['lat'], city['lon'], key)
-    print(url)
+    historical_data = {}
+    hourly_data = {}
+    daily_data = {}
 
-    hourly_forecasts = []
-    daily_forecasts = []
+    for city in cities:
+        # city = cities[0]
+        url = 'https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&units=imperial&appid={}'.format(city['lat'], city['lon'], key)
+        print(url)
 
-    r = requests.get(url)
-    
-    data = r.json()
-    print('Current data')
-    current = data['current']
-    
-    current_data = parseObj(current)
-    print('-------------------')
-    print('Hourly data')
-    hourly = data['hourly']
-    for hour in hourly:
-        hour_data = parseObj(hour)
-    print('-------------------')
+        hourly_forecasts = []
+        daily_forecasts = []
 
-    print('Daily data')
-    daily = data['daily']
-    for day in daily:
-        day_data = parseObj(day, True)
-    print('-------------------')
+        r = requests.get(url)
+        
+        data = r.json()
+        # print(data)
+        # print('Current data')
+        current = data['current']
+        
+        current_data = parseObj(current)
+        # print('-------------------')
+        # print('Hourly data')
+        hourly = data['hourly']
+        for hour in hourly:
+            hourly_forecasts.append(parseObj(hour))
 
-    return 0, 0, 0
+        # print('-------------------')
+
+        # print('Daily data')
+        daily = data['daily']
+        for day in daily:
+            daily_forecasts.append(parseObj(day, True))
+        # print('-------------------')
+
+        # Add to city to document data
+        historical_data[city['mongo-key']] = current
+        daily_data[city['mongo-key']] = daily_forecasts
+        hourly_data[city['mongo-key']] = hourly_forecasts
+
+    return historical_data, daily_data, hourly_data
 
 '''
     args: 
@@ -73,6 +87,8 @@ def grabData(key):
 
 '''
 def insertDocument(collection, data):
+    collection.insert_one(data)
+
     return
 
 def main():
@@ -80,13 +96,20 @@ def main():
         apikey = json.load(f)
 
     # TODO: Open client and get collections
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    mydb = myclient['scorecast']
+    histcol = mydb['historical']
+    dailycol = mydb['daily']
+    hourlycol = mydb['hourly']
     
     # Get city data for each city
     historical, daily, hourly = grabData(apikey['key'])
-    
-    # TODO: Get the data formated and added as a document in each collection
 
     # Insert each data into respective collections
+    insertDocument(histcol, historical)
+    insertDocument(dailycol, daily)
+    insertDocument(hourlycol, hourly)
+
 
 if __name__ == "__main__":
     main()
