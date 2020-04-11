@@ -6,7 +6,7 @@ export const DashboardContainer = styled.div`
 
     display: grid;
     grid-template-columns: 15% 1fr 1fr 1fr 15%;
-    grid-template-rows: 50px 1fr 1fr 40px;
+    grid-template-rows: 50px minmax(0, 1fr) minmax(0, 1fr) 40px;
     column-gap: 1%;
     row-gap: 5%;
     grid-template-areas:
@@ -16,6 +16,8 @@ export const DashboardContainer = styled.div`
         'footer footer footer footer footer ';
 
     background: linear-gradient(119.36deg, #00577c 0%, #003248 100%);
+
+    overflow-y: hidden;
 
     cursor: default;
 `
