@@ -16,4 +16,6 @@ export const DashboardContainer = styled.div`
         'footer footer footer footer footer ';
 
     background: linear-gradient(119.36deg, #00577c 0%, #003248 100%);
+
+    cursor: default;
 `
