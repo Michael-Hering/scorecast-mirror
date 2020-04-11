@@ -15,7 +15,7 @@ const TempDashboardComponent = styled.div`
 export const Dashboard = () => {
     return (
         <DashboardContainer>
-            <TopBar />
+            <TopBar city={'Denver'} />
             <TempDashboardComponent
                 style={{ gridArea: 'weather' }}
             ></TempDashboardComponent>
