@@ -1,6 +1,4 @@
 import React from 'react'
-import styled from '@emotion/styled'
-import { Colors } from 'common/colors/Colors'
 import { Logo } from 'common/assets/Logo'
 import ProfilePic from 'common/assets/ProfilePic.png'
 
@@ -15,6 +13,14 @@ import {
 } from 'dash_components/TopBarStyles'
 
 export const TopBar = ({ city }: Props) => {
+    const changeCityClicked = () => {
+        alert('Lolno. Only Denver right now.')
+    }
+
+    const profileClicked = () => {
+        alert('There are no individuals, only the one.')
+    }
+
     return (
         <TopBarContainer>
             <Logo
@@ -29,9 +35,11 @@ export const TopBar = ({ city }: Props) => {
             <LogoText>Scorecast</LogoText>
             <CityContainer>
                 <CityText>{city}</CityText>
-                <ChangeCity>(change city)</ChangeCity>
+                <ChangeCity onClick={changeCityClicked}>
+                    (change city)
+                </ChangeCity>
             </CityContainer>
-            <ProfileBox>
+            <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
                     src={ProfilePic}
