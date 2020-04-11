@@ -1,15 +1,33 @@
-import React from "react";
-import styled from "@emotion/styled";
+import React from 'react'
+import styled from '@emotion/styled'
+import { Colors } from 'common/colors/Colors'
 
-const DashboardContainer = styled.div`
-	width: 100%;
-	height: 100%;
-`;
+import { DashboardContainer } from 'pages/DashboardStyles'
+import { TopBar } from 'dash_components/TopBar'
+
+const TempDashboardComponent = styled.div`
+    width: 100%;
+    height: 100%;
+
+    background-color: ${Colors.Obsidian};
+`
 
 export const Dashboard = () => {
-	return (
-		<DashboardContainer>
-			Welcome to the Scorecast Dashboard
-		</DashboardContainer>
-	);
-};
+    return (
+        <DashboardContainer>
+            <TopBar />
+            <TempDashboardComponent
+                style={{ gridArea: 'weather' }}
+            ></TempDashboardComponent>
+            <TempDashboardComponent
+                style={{ gridArea: 'odds' }}
+            ></TempDashboardComponent>
+            <TempDashboardComponent
+                style={{ gridArea: 'twittertop' }}
+            ></TempDashboardComponent>
+            <TempDashboardComponent
+                style={{ gridArea: 'twitterbottom' }}
+            ></TempDashboardComponent>
+        </DashboardContainer>
+    )
+}
