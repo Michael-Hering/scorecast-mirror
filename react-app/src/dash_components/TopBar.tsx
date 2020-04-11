@@ -48,7 +48,7 @@ export const TopBar = ({ city }: Props) => {
                         height: 'auto',
                         marginRight: '4px',
                     }}
-                    alt="profile picture"
+                    alt="profile"
                 />
             </ProfileBox>
         </TopBarContainer>
