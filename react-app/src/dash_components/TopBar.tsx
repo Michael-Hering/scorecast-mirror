@@ -25,7 +25,7 @@ export const TopBar = ({ city }: Props) => {
         <TopBarContainer>
             <Logo
                 style={{
-                    height: '75%',
+                    height: '70%',
                     width: 'auto',
                     marginLeft: '5px',
                     marginRight: '10px',
