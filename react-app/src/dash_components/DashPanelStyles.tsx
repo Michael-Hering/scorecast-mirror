@@ -29,7 +29,7 @@ export const DashPaneItem = styled.div`
     height: 100px;
     width: 100%;
 
-    background-color: red;
+    background-color: ${Colors.LowTempBlue};
     box-sizing: border-box;
     border: 2px solid ${Colors.LightObsidian};
 `

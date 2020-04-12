@@ -3,6 +3,7 @@ export const Colors = {
     LightObsidian: '#2F2F2F', // for profile box
     BrightBlue: '#00B2FF', //"Scorecast Blue"
     DarkWhite: '#DEDEDE', //for the panel titles lol
+    LowTempBlue: '#006197',
     White: '#FFFFFF',
     Black: '#000000',
 }

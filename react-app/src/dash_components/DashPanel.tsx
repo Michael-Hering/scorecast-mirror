@@ -10,23 +10,7 @@ export const DashPanel = ({ dashLocation, dashName }: Props) => {
     return (
         <DashPanelContainer style={{ gridArea: dashLocation }}>
             <DashPanelTitle>{dashName}</DashPanelTitle>
-            <DashPane>
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-                <DashPaneItem />
-            </DashPane>
+            <DashPane></DashPane>
         </DashPanelContainer>
     )
 }
