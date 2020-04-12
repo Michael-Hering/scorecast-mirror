@@ -1,33 +1,88 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 
-import { SingleNumberBox, DarkLabel } from 'dash_components/OddsPanelStyles'
+import {
+    SingleNumberBox,
+    DarkLabel,
+    BlueTextButton,
+    OddsItem,
+    OddsContainer,
+    OddsElement,
+    SmallWhiteText,
+    LargeWhiteText,
+} from 'dash_components/OddsPanelStyles'
 
-const MinTempItem = ({ temp }: { temp: number }) => {
+enum ItemType {
+    MINTEMP,
+    MAXTEMP,
+}
+
+const Odds = ({ under, over }: { under: number; over: number }) => {
     return (
-        <SingleNumberBox style={{ backgroundColor: Colors.LowTempBlue }}>
-            {temp}
-        </SingleNumberBox>
+        <OddsContainer>
+            <OddsElement style={{ gridArea: 'under' }}>
+                <SmallWhiteText>UNDER</SmallWhiteText>
+                <LargeWhiteText>{under}</LargeWhiteText>
+            </OddsElement>
+            <OddsElement style={{ gridArea: 'over' }}>
+                <SmallWhiteText>OVER</SmallWhiteText>
+                <LargeWhiteText>{over}</LargeWhiteText>
+            </OddsElement>
+            <BlueTextButton style={{ gridArea: 'bunder' }}>
+                Place Bet
+            </BlueTextButton>
+            <BlueTextButton style={{ gridArea: 'bover' }}>
+                Place Bet
+            </BlueTextButton>
+        </OddsContainer>
     )
 }
 
-const MaxTempItem = ({ temp }: { temp: number }) => {
+const PanelItem = ({ temp, type }: { temp: number; type: ItemType }) => {
+    const [isShowingOdds, setIsShowingOdds] = useState(false)
+
+    const showOddsClicked = () => {
+        setIsShowingOdds(!isShowingOdds)
+    }
+
+    let backgroundColor: string = ''
+    let labelString: string = ''
+
+    switch (type) {
+        case ItemType.MINTEMP:
+            backgroundColor = Colors.LowTempBlue
+            labelString = "Tomorrow's Min Temp. (°F)"
+            break
+
+        case ItemType.MAXTEMP:
+            backgroundColor = Colors.MaxTempRed
+            labelString = "Tomorrow's Max Temp. (°F)"
+            break
+
+        default:
+            break
+    }
+
     return (
-        <SingleNumberBox style={{ backgroundColor: Colors.MaxTempRed }}>
-            {temp}
-        </SingleNumberBox>
+        <OddsItem>
+            <SingleNumberBox style={{ backgroundColor: backgroundColor }}>
+                {temp}
+            </SingleNumberBox>
+            <DarkLabel>{labelString}</DarkLabel>
+            <BlueTextButton onClick={showOddsClicked}>
+                {isShowingOdds ? 'Hide Odds' : 'Show Odds'}
+            </BlueTextButton>
+            {isShowingOdds && <Odds under={-100} over={100} />}
+        </OddsItem>
     )
 }
 
 export const OddsPanel = () => {
     return (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <MinTempItem temp={70} />
-            <DarkLabel>Tomorrow's Min Temp. (°F)</DarkLabel>
-            <MaxTempItem temp={80} />
-            <DarkLabel>Tomorrow's Max Temp. (°F)</DarkLabel>
-            <MinTempItem temp={70} />
+            <PanelItem temp={70} type={ItemType.MINTEMP} />
+            <PanelItem temp={80} type={ItemType.MAXTEMP} />
         </DashPanel>
     )
 }

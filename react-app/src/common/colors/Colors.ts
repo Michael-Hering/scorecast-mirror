@@ -5,6 +5,7 @@ export const Colors = {
     DarkWhite: '#DEDEDE', //for the panel titles lol
     LowTempBlue: '#006197',
     MaxTempRed: '#970000',
+    NavyBlue: '#1F1F2C', //used for odds and histogram BGs
     White: '#FFFFFF',
     Black: '#000000',
 }
