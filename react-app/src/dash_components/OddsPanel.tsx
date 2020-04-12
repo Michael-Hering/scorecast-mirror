@@ -16,6 +16,9 @@ import {
 enum ItemType {
     MINTEMP,
     MAXTEMP,
+    PRECIP,
+    WIND,
+    HUMIDITY,
 }
 
 const Odds = ({ under, over }: { under: number; over: number }) => {
@@ -60,6 +63,21 @@ const PanelItem = ({ temp, type }: { temp: number; type: ItemType }) => {
             labelString = "Tomorrow's Max Temp. (°F)"
             break
 
+        case ItemType.PRECIP:
+            backgroundColor = Colors.RainBlue
+            labelString = "Tomorrow's Total Precipitation (in.)"
+            break
+
+        case ItemType.WIND:
+            backgroundColor = Colors.LightGray
+            labelString = "Tomorrow's Wind Speed (mph)"
+            break
+
+        case ItemType.HUMIDITY:
+            backgroundColor = Colors.DarkBlue
+            labelString = "Tomorrow's Humidity (%)"
+            break
+
         default:
             break
     }
@@ -83,6 +101,9 @@ export const OddsPanel = () => {
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
             <PanelItem temp={70} type={ItemType.MINTEMP} />
             <PanelItem temp={80} type={ItemType.MAXTEMP} />
+            <PanelItem temp={4.1} type={ItemType.PRECIP} />
+            <PanelItem temp={34} type={ItemType.WIND} />
+            <PanelItem temp={77} type={ItemType.HUMIDITY} />
         </DashPanel>
     )
 }

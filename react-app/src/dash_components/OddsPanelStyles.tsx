@@ -13,12 +13,12 @@ export const OddsItem = styled.div`
 
 export const SingleNumberBox = styled.div`
     width: 100%;
-    height: 100px;
+    height: 110px;
 
     display: grid;
     place-items: center center;
 
-    -webkit-text-stroke: 2px black;
+    -webkit-text-stroke: 2.5px black;
 
     font-size: 60px;
 
@@ -78,6 +78,7 @@ export const OddsElement = styled.div`
 
     background-color: ${Colors.NavyBlue};
     border: 1px solid ${Colors.Black};
+    box-sizing: border-box;
 `
 
 export const SmallWhiteText = styled.div`
