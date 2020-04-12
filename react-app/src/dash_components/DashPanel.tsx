@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import {
     DashPanelContainer,
     DashPane,
@@ -6,11 +6,11 @@ import {
     DashPaneItem,
 } from 'dash_components/DashPanelStyles'
 
-export const DashPanel = ({ dashLocation, dashName }: Props) => {
+export const DashPanel = ({ dashLocation, dashName, children }: Props) => {
     return (
         <DashPanelContainer style={{ gridArea: dashLocation }}>
             <DashPanelTitle>{dashName}</DashPanelTitle>
-            <DashPane></DashPane>
+            <DashPane>{children}</DashPane>
         </DashPanelContainer>
     )
 }
@@ -18,4 +18,5 @@ export const DashPanel = ({ dashLocation, dashName }: Props) => {
 interface Props {
     dashLocation: string
     dashName: string
+    children?: ReactNode
 }

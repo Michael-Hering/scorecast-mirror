@@ -4,6 +4,7 @@ import { DashboardContainer } from 'pages/DashboardStyles'
 import { TopBar } from 'dash_components/TopBar'
 
 import { DashPanel } from 'dash_components/DashPanel'
+import { OddsPanel } from 'dash_components/OddsPanel'
 
 export const Dashboard = () => {
     return (
@@ -13,10 +14,7 @@ export const Dashboard = () => {
                 dashLocation={'weather'}
                 dashName={'Weather Report'}
             ></DashPanel>
-            <DashPanel
-                dashLocation={'odds'}
-                dashName={"Today's Lines"}
-            ></DashPanel>
+            <OddsPanel />
             <DashPanel
                 dashLocation={'twittertop'}
                 dashName={'Twitter Analysis'}
