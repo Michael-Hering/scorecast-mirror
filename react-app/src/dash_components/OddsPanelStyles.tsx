@@ -16,6 +16,21 @@ export const SingleNumberBox = styled.div`
 
     background-color: ${Colors.Obsidian};
     box-sizing: border-box;
-    border: 2px solid ${Colors.LightObsidian};
+    color: ${Colors.White};
+`
+
+export const DarkLabel = styled.div`
+    height: 50px;
+    width: 100%;
+
+    display: grid;
+    place-items: center center;
+
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+
+    background-color: ${Colors.Obsidian};
+    box-sizing: border-box;
     color: ${Colors.White};
 `

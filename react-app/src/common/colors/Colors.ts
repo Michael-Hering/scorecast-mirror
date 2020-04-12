@@ -4,6 +4,7 @@ export const Colors = {
     BrightBlue: '#00B2FF', //"Scorecast Blue"
     DarkWhite: '#DEDEDE', //for the panel titles lol
     LowTempBlue: '#006197',
+    MaxTempRed: '#970000',
     White: '#FFFFFF',
     Black: '#000000',
 }
