@@ -10,6 +10,7 @@ def parseObj(obj, daily=False):
 
     ret['time'] = obj['dt']
     ret['windspeed'] = obj['wind_speed']
+    ret['weather'] = obj['weather']
     rain = 'rain' in obj.keys()
     if(rain and daily):
         # if('1h' in ret['rain'].keys()):
@@ -18,10 +19,13 @@ def parseObj(obj, daily=False):
         if('1h' in obj['rain'].keys()):
             ret['rain'] = obj['rain']['1h']
 
+    if('snow' in obj.keys()):
+        ret['snow'] = obj['snow']
+
     if(daily):
         ret['max_temp'] = obj['temp']['max']
         ret['min_temp'] = obj['temp']['min']
-    else:
+    else:   
         ret['temp'] = obj['temp']
 
     # print(ret)
@@ -29,13 +33,14 @@ def parseObj(obj, daily=False):
     return ret
 
 '''
-NOTE: this should only be called once for each city every ten minutes per the api
     args:
         key: api key for Open Weather
     return:
         dicts with all cities for entry in Historical, DailyForecast, HourlyForecast
 '''
 def grabData(key):
+
+    # cities = json.loads(cities_json)
     with open('./cities.json') as f:
         cities = json.load(f)
 
@@ -91,19 +96,22 @@ def insertDocument(collection, data):
 
     return
 
+
 def main():
-    with open('./apikey.json') as f:
-        apikey = json.load(f)
+    with open('./secrets.json') as f:
+        secrets = json.load(f)
 
     # TODO: Open client and get collections
-    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    local_uri = 'mongodb://localhost:27017/'
+    atlas_uri = secrets['mongo_uri']
+    myclient = pymongo.MongoClient(atlas_uri)
     mydb = myclient['scorecast']
     histcol = mydb['historical']
     dailycol = mydb['daily']
     hourlycol = mydb['hourly']
     
     # Get city data for each city
-    historical, daily, hourly = grabData(apikey['key'])
+    historical, daily, hourly = grabData(secrets['key'])
 
     # Insert each data into respective collections
     insertDocument(histcol, historical)
