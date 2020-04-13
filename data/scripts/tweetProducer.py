@@ -13,6 +13,8 @@ class TweetListener(StreamListener):
   """
   def on_data(self, data):
       res = json.loads(data)
+      if ("limit" in res):
+        return
       if (res["retweeted"] == "false"):
         topic = cityByAccount[res["user"]["id_str"]]
         producer.send(topic, data.encode('utf-8'))
