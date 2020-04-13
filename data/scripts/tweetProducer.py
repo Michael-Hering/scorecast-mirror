@@ -65,11 +65,24 @@ for key in accountsByCity:
     cityByAccount[id] = key
     allAccounts.append(id)
 
+# Get server ip from the environment
+hasHostIp = False
+while not hasHostIp:
+  try:
+    broker_host_ip = os.environ["BROKER_HOST_IP"]
+    hasHostIp = True
+  except:
+    print("Kafka broker host IP address not set. Retrying in 10 seconds...", flush=True)
+    time.sleep(10)
+    hasHostIp = False
+
+server_string = broker_host_ip + ':9092'
+
 # Set up kafka producer
 connected = False
 while not connected:
   try:
-    producer = kafka.KafkaProducer(bootstrap_servers=['localhost:9092'])
+    producer = kafka.KafkaProducer(bootstrap_servers=[server_string])
     print("Producer connected to kafka", flush=True)
     connected = True
   except kafka.errors.NoBrokersAvailable:
@@ -90,9 +103,11 @@ while not hasCredentials:
     access_token_secret =  os.environ["TWITTER_ACCESS_TOKEN_SECRET"]
     consumer_key =  os.environ["TWITTER_CONSUMER_KEY"]
     consumer_secret =  os.environ["TWITTER_CONSUMER_SECRET"]
+    hasCredentials = True
   except:
     print("Twitter credentials not set. Retrying in 10 seconds...", flush=True)
     time.sleep(10)
+    hasCredentials = False
 
 # OAuth with twitter
 auth = OAuthHandler(consumer_key, consumer_secret)
