@@ -15,7 +15,7 @@ class TweetListener(StreamListener):
       res = json.loads(data)
       if ("user" not in res): # Response is not a tweet, return
         return
-      if (res["retweeted"] == "false"): # Response is an original tweet, produce to Kafka
+      if (res["retweeted"] == False): # Response is an original tweet, produce to Kafka
         topic = cityByAccount[res["user"]["id_str"]]
         producer.send(topic, data.encode('utf-8'))
         print ("Produced: {Topic: " + topic + ", Tweet: " + res["text"] + "}", flush=True)
