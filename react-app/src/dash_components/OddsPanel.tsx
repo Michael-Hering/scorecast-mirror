@@ -74,7 +74,7 @@ const PanelItem = ({ temp, type }: { temp: number; type: ItemType }) => {
             break
 
         case ItemType.HUMIDITY:
-            backgroundColor = Colors.DarkBlue
+            backgroundColor = Colors.LightishBlue
             labelString = "Tomorrow's Humidity (%)"
             break
 

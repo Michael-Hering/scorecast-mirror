@@ -8,7 +8,7 @@ export const Colors = {
     NavyBlue: '#1F1F2C', //used for odds and histogram BGs
     RainBlue: '#184C69', //used for precipitation
     LightGray: '#585858', //used for wind speed
-    DarkBlue: '#1F2A94', //used for humidity
+    LightishBlue: '#3A4184', //used for humidity
     White: '#FFFFFF',
     Black: '#000000',
 }
