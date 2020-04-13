@@ -13,12 +13,12 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "centos-8-v20200205"
+      image = "cos-cloud/cos-stable-81-12871-69-0"
     }
   }
 
   // Make sure flask is installed on all new instances for later steps
-  metadata_startup_script = "sudo yum update; sudo yum install -yq build-essential python-pip rsync"
+  metadata_startup_script = file("./startupscript.sh")
 
   network_interface {
     network = "default"
