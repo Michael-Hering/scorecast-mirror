@@ -17,8 +17,7 @@ scorecast/
   - react-app/
     - dockerfile
     - ...
-  - data/
-    - dockerfile
+  - mongo/
     - ...
   -docker-compose.yml
 ```
@@ -26,6 +25,7 @@ scorecast/
 For more information on these services, see the links below:
 
 [React App](https://github.com/CUBigDataClass/scorecast/tree/master/react-app)
+[Mongo](https://github.com/CUBigDataClass/scorecast/tree/master/mongo)
 
 ## Usage
 
