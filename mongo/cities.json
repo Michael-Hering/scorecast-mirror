@@ -1,0 +1,184 @@
+[
+    {
+        "name": "New York",
+        "ow-id": "5128581",
+        "lon": -74.005966,
+        "lat": 40.714272,
+        "mongo-key": "new-york"
+    },
+    {
+        "name": "Los Angeles",
+        "ow-id": "1705545",
+        "lon": 125.608063,
+        "lat": 9.0125,
+        "mongo-key": "los-angeles"
+    },
+    {
+        "name": "Chicago",
+        "ow-id": "4887398",
+        "lon": -87.650047,
+        "lat": 41.850029,
+        "mongo-key": "chicago"
+    },
+    {
+        "name": "Houston",
+        "ow-id": "4699066",
+        "lon": -95.363274,
+        "lat": 29.763281,
+        "mongo-key": "houston"
+    },
+    {
+        "name": "Phoenix",
+        "ow-id": "4905873",
+        "lon": -87.634773,
+        "lat": 41.611149,
+        "mongo-key": "phoenix"
+    },
+    {
+        "name": "Philadelphia",
+        "ow-id": "4560349",
+        "lon": -75.163788,
+        "lat": 39.952339,
+        "mongo-key": "philadelphia"
+    },
+    {
+        "name": "San Antonio",
+        "ow-id": "4726206",
+        "lon": -98.493629,
+        "lat": 29.42412,
+        "mongo-key": "san-antonio"
+    },
+    {
+        "name": "San Diego",
+        "ow-id": "5391811",
+        "lon": -117.157257,
+        "lat": 32.715328,
+        "mongo-key": "san-diego"
+    },
+    {
+        "name": "Dallas",
+        "ow-id": "4684888",
+        "lon": -96.806671,
+        "lat": 32.783058,
+        "mongo-key": "dallas"
+    },
+    {
+        "name": "San Jose",
+        "ow-id": "5392171",
+        "lon": -121.894958,
+        "lat": 37.33939,
+        "mongo-key": "san-jose"
+    },
+    {
+        "name": "Austin",
+        "ow-id": "4671654",
+        "lon": -97.743057,
+        "lat": 30.267151,
+        "mongo-key": "austin"
+    },
+    {
+        "name": "Jacksonville",
+        "ow-id": "4160021",
+        "lon": -81.655647,
+        "lat": 30.33218,
+        "mongo-key": "jacksonville"
+    },
+    {
+        "name": "San Francisco",
+        "ow-id": "5391959",
+        "lon": -122.419418,
+        "lat": 37.774929,
+        "mongo-key": "san-francisco"
+    },
+    {
+        "name": "Charlotte",
+        "ow-id": "4460243",
+        "lon": -80.843132,
+        "lat": 35.227089,
+        "mongo-key": "charlotte"
+    },
+    {
+        "name": "Indianapolis",
+        "ow-id": "4259418",
+        "lon": -86.158043,
+        "lat": 39.768379,
+        "mongo-key": "indianapolis"
+    },
+    {
+        "name": "Seattle",
+        "ow-id": "5809844",
+        "lon": -122.332069,
+        "lat": 47.606209,
+        "mongo-key": "seattle"
+    },
+    {
+        "name": "Denver",
+        "ow-id": "5419384",
+        "lon": -104.984703,
+        "lat": 39.739151,
+        "mongo-key": "denver"
+    },
+    {
+        "name": "Boston",
+        "ow-id": "4930956",
+        "lon": -71.059769,
+        "lat": 42.358429,
+        "mongo-key": "boston"
+    },
+    {
+        "name": "El Paso",
+        "ow-id": "5520993",
+        "lon": -106.486931,
+        "lat": 31.75872,
+        "mongo-key": "el-paso"
+    },
+    {
+        "name": "Detroit",
+        "ow-id": "4990729",
+        "lon": -83.045753,
+        "lat": 42.331429,
+        "mongo-key": "detroit"
+    },
+    {
+        "name": "Nashville",
+        "ow-id": "4644585",
+        "lon": -86.784439,
+        "lat": 36.16589,
+        "mongo-key": "nashville"
+    },
+    {
+        "name": "Portland",
+        "ow-id": "5746545",
+        "lon": -122.676208,
+        "lat": 45.523449,
+        "mongo-key": "portland"
+    },
+    {
+        "name": "Las Vegas",
+        "ow-id": "5475433",
+        "lon": -105.2239,
+        "lat": 35.593929,
+        "mongo-key": "las-vegas"
+    },
+    {
+        "name": "Baltimore",
+        "ow-id": "4347778",
+        "lon": -76.61219,
+        "lat": 39.290379,
+        "mongo-key": "baltimore"
+    },
+    {
+        "name": "Albuquerque",
+        "ow-id": "5454711",
+        "lon": -106.651138,
+        "lat": 35.084492,
+        "mongo-key": "albuquerque"
+    },
+    {
+        "name": "Honolulu",
+        "ow-id": "5856195",
+        "lon": -157.858337,
+        "lat": 21.30694,
+        "mongo-key": "honolulu"
+    }
+]

@@ -40,6 +40,44 @@ resource "google_sql_database_instance" "instance" {
   }
 }
 
+// Single Google Kubernetes Engine instsance
+resource "google_container_cluster" "primary" {
+  name     = "scorecast-gke-cluster"
+  location = "us-central1-a"
+
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
+  remove_default_node_pool = true
+  initial_node_count       = 1
+}
+
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "scorecast-node-pool"
+  location   = "us-central1-a"
+  cluster    = google_container_cluster.primary.name
+  initial_node_count = 1
+  depends_on = [
+    google_container_cluster.primary,
+  ]
+
+  autoscaling {
+    min_node_count=0
+    max_node_count=1
+  }
+
+  node_config {
+    preemptible  = false
+    machine_type = "n1-standard-1"
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+  }
+}
+
 // A variable for extracting the external ip of the instance
 output "ip" {
   value = "${google_compute_instance.default.network_interface.0.access_config.0.nat_ip}"
