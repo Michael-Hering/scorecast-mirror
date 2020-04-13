@@ -42,7 +42,7 @@ const Odds = ({ under, over }: { under: number; over: number }) => {
     )
 }
 
-const PanelItem = ({ temp, type }: { temp: number; type: ItemType }) => {
+const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
     const [isShowingOdds, setIsShowingOdds] = useState(false)
 
     const showOddsClicked = () => {
@@ -99,11 +99,11 @@ const PanelItem = ({ temp, type }: { temp: number; type: ItemType }) => {
 export const OddsPanel = () => {
     return (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <PanelItem temp={70} type={ItemType.MINTEMP} />
-            <PanelItem temp={80} type={ItemType.MAXTEMP} />
-            <PanelItem temp={4.1} type={ItemType.PRECIP} />
-            <PanelItem temp={34} type={ItemType.WIND} />
-            <PanelItem temp={77} type={ItemType.HUMIDITY} />
+            <PanelItem val={70} type={ItemType.MINTEMP} />
+            <PanelItem val={80} type={ItemType.MAXTEMP} />
+            <PanelItem val={4.1} type={ItemType.PRECIP} />
+            <PanelItem val={34} type={ItemType.WIND} />
+            <PanelItem val={77} type={ItemType.HUMIDITY} />
         </DashPanel>
     )
 }
