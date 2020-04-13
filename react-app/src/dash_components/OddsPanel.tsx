@@ -11,6 +11,7 @@ import {
     OddsElement,
     SmallWhiteText,
     LargeWhiteText,
+    Divider,
 } from 'dash_components/OddsPanelStyles'
 
 enum ItemType {
@@ -84,6 +85,7 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
 
     return (
         <OddsItem>
+            <Divider style={{ backgroundImage: `linear-gradient(${Colors.Black}, ${backgroundColor})` }}></Divider>
             <SingleNumberBox style={{ backgroundColor: backgroundColor }}>
                 {temp}
             </SingleNumberBox>

@@ -88,3 +88,7 @@ export const SmallWhiteText = styled.div`
 export const LargeWhiteText = styled.div`
     font-size: 40px;
 `
+export const Divider = styled.div`
+    width: 100%;
+    height: 12px;
+`
