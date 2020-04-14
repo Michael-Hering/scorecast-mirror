@@ -5,3 +5,8 @@ services:
     image: gcr.io/scorecast-269923/scorecast-react-app
     ports: 
       - "80:80"
+  express-app:
+    container_name: express-app
+    build: './express-app'
+    ports:
+      - "5000:5000"
