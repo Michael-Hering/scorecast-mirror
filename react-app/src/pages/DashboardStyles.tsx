@@ -5,7 +5,7 @@ export const DashboardContainer = styled.div`
     height: 100%;
 
     display: grid;
-    grid-template-columns: 15vw 1fr 1fr 1fr 15vw;
+    grid-template-columns: 10vw 1fr 1fr 1fr 10vw;
     grid-template-rows: 50px minmax(0, 1fr) minmax(0, 1fr) 40px;
     column-gap: 1%;
     row-gap: 5%;
