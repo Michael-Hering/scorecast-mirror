@@ -8,17 +8,17 @@ provider "google" {
 // A single Google Cloud Engine instance
 resource "google_compute_instance" "default" {
   name         = "scorecast"
-  machine_type = "f1-micro"
+  machine_type = "n1-standard-1"
   zone         = "us-central1-a"
 
   boot_disk {
     initialize_params {
-      image = "centos-8-v20200205"
+      image = "cos-cloud/cos-stable-81-12871-69-0"
     }
   }
 
   // Make sure flask is installed on all new instances for later steps
-  metadata_startup_script = "sudo yum update; sudo yum install -yq build-essential python-pip rsync"
+  metadata_startup_script = file("./startupscript.sh")
 
   network_interface {
     network = "default"
