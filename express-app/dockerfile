@@ -1,6 +1,6 @@
 FROM node:lts-slim
 
-WORKDIR /../scorecast
+WORKDIR /usr/src/server
 
 RUN npm install -g nodemon
 

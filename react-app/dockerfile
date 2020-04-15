@@ -1,11 +1,19 @@
 FROM alpine:3 as builder
+
+WORKDIR /usr/src/app
+
 COPY package.json yarn.lock ./
 RUN apk add yarn
+RUN apk add curl
 RUN yarn
 COPY . ./
 RUN yarn build
 
 FROM nginx:1.16.1-alpine
-COPY --from=builder /build /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html*
+
+COPY /nginx.conf /etc/nginx/nginx.conf
+
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

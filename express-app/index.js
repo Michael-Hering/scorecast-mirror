@@ -21,12 +21,14 @@ app.get('/ping', (req, res) => {
   return res.send('pong')
 })
 
-app.use(express.static(path.join(__dirname, '/../react-app/build')))
+// app.use(express.static(path.join(__dirname, '/../react-app/build')))
+app.use(express.static(path.join('/usr/share/nginx/html')))
 
 app.get('*', (req, res) => {
   console.log(__dirname)
   console.log(path.join(__dirname, '/../react-app/build', 'index.html'))
-  res.sendFile(path.join(__dirname, '/../react-app/build', 'index.html'))
+//   res.sendFile(path.join(__dirname, '/../react-app/build', 'index.html'))
+  res.sendFile(path.join('/usr/share/nginx/html', 'index.html'))
 })
 
 // PORT

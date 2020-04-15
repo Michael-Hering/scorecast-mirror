@@ -1,12 +1,17 @@
 version: "3.7"
 services:
   react-app:
+    container_name: react-app
     build: './react-app'
     image: gcr.io/scorecast-269923/scorecast-react-app
     ports: 
       - "80:80"
+    volumes:
+      - '/app'
+      - '/app/node_modules'
   express-app:
     container_name: express-app
     build: './express-app'
+    image: gcr.io/scorecast-269923/scorecast-express-app
     ports:
       - "5000:5000"
