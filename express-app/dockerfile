@@ -2,9 +2,11 @@ FROM node:lts-slim
 
 WORKDIR /usr/src/server
 
+COPY package*.json ./
+
 RUN npm install -g nodemon
 
-COPY . .
+COPY . ./
 
 EXPOSE 5000
 
