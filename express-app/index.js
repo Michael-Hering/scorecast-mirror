@@ -20,15 +20,6 @@ app.get('/ping', (req, res) => {
   return res.send('pong')
 })
 
-//locally serving static build files of react app
-
-// app.use(express.static(path.join(__dirname, '/../react-app/build')))
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '/../react-app/build', 'index.html'))
-// })
-
-
 // PORT
 const port = process.env.PORT || 5000
 
