@@ -5,15 +5,15 @@ export const ProfileContainer = styled.div`
     height: 100%;
 
     display: grid;
-    grid-template-columns: 10vw 1fr 1fr 1fr 10vw;
+    grid-template-columns: 20vw 1fr 1fr 20vw;
     grid-template-rows: 50px minmax(0, 1fr) minmax(0, 1fr) 40px;
     column-gap: 1%;
     row-gap: 5%;
     grid-template-areas:
-        'topbar topbar topbar topbar topbar'
-        '. weather odds twittertop .'
-        '. weather odds twitterbottom .'
-        '. . . . . ';
+        'topbar topbar topbar topbar'
+        '. profile bets .'
+        '. settings bets .'
+        '. . . . ';
 
     /* Scale gutters for smaller screens */
     @media screen and (max-width: 1900px) {

@@ -27,7 +27,7 @@ export const Logo = (props: Props) => {
                 r="43.3385"
                 fill="#00B2FF"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="1.5"
@@ -37,7 +37,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="53.3069"
@@ -47,7 +47,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="1.5"
@@ -57,7 +57,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="35.1292"
@@ -67,7 +67,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="49.6714"
@@ -77,7 +77,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
         </svg>
     )
