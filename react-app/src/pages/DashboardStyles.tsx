@@ -17,7 +17,7 @@ export const DashboardContainer = styled.div`
 
     /* Scale gutters for smaller screens */
     @media screen and (max-width: 1900px) {
-        grid-template-columns: 5vw 1fr 1fr 1fr 5vw;
+        grid-template-columns: 2vw 1fr 1fr 1fr 2vw;
     }
 
     background: linear-gradient(119.36deg, #00577c 0%, #003248 100%);
