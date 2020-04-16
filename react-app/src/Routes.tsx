@@ -27,15 +27,24 @@ const AuthenticatedProfile = () => {
 }
 
 export const Routes = () => {
+    const history = useHistory()
+
+    const onRedirectCallback = () => {
+        history.push('/profile')
+    }
+
     return (
-        <Switch>
-            <Route exact={true} path="/" component={Dashboard} />
-            <Route
-                exact={true}
-                path="/profile"
-                component={AuthenticatedProfile}
-            />
-            <Route component={PageNotFound} />
-        </Switch>
+        <Auth0Provider
+            domain={config.domain}
+            client_id={config.clientId}
+            redirect_uri={window.location.origin + '/profile'}
+            onRedirectCallback={onRedirectCallback}
+        >
+            <Switch>
+                <Route exact={true} path="/" component={Dashboard} />
+                <Route exact={true} path="/profile" component={Profile} />
+                <Route component={PageNotFound} />
+            </Switch>
+        </Auth0Provider>
     )
 }
