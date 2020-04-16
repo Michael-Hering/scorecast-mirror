@@ -15,7 +15,7 @@ export const WeatherContainer = styled.div`
 
 export const MinMaxContainer = styled.div`
     width: 100%;
-    height: 75px;
+    height: 90px;
 
     display: grid;
     place-items: center center;

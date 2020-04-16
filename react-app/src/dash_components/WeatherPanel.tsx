@@ -4,7 +4,7 @@ import { Colors } from 'common/colors/Colors'
 
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { WeatherContainer, MinMaxElement, GraphContainer, WeatherItem, MinMaxContainer } from './WeatherPanelStyles';
-import { DarkLabel, BlueTextButton, SingleNumberBox, VerySmallWhiteText, MediumWhiteText } from './PanelStyles';
+import { DarkLabel, SmallBlueTextButton, DarkLabelButtonContainer, VerySmallWhiteText, SmallWhiteText, MediumWhiteText } from './PanelStyles';
 
 const temp_data = [
     {hour: '00', value: 25}, 
@@ -45,7 +45,7 @@ interface DataItem {
 enum ItemType {
     TEMP,
     PRECIP,
-    WINDSPEED,
+    WIND,
     HUMIDITY,
 }
 
@@ -91,16 +91,30 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
         case ItemType.TEMP:
             labelString = "Forecast Temp. (°F)"
             break
+
+        case ItemType.HUMIDITY:
+            labelString = "Forecast Humidity (%)"
+            break
+
+        case ItemType.WIND:
+            labelString = "Forecast Wind Speed (mph)"
+            break
+        
+        case ItemType.PRECIP:
+            labelString = "Forecast Precipitation (in.)"
+            break
     }
 
     return (
         <WeatherItem>
             {!isShowingHistogram && <MinMax min={min} max={max}></MinMax>}
             {isShowingHistogram && <ForecastGraph data={data}/>}
-            <DarkLabel>{labelString}</DarkLabel>
-            <BlueTextButton onClick={showHistogramClicked}>
-                {isShowingHistogram ? 'Hide Histogram' : 'Show Histogram'}
-            </BlueTextButton>
+            <DarkLabelButtonContainer>
+                <SmallWhiteText style={{gridArea: "label"}}>{labelString}</SmallWhiteText>
+                <SmallBlueTextButton style={{gridArea: "button"}} onClick={showHistogramClicked}>
+                    {isShowingHistogram ? 'Hide Histogram' : 'Show Histogram'}
+                </SmallBlueTextButton>
+            </DarkLabelButtonContainer>
         </WeatherItem>
     )
 }
@@ -109,6 +123,9 @@ export const WeatherPanel = () => {
     return (
         <DashPanel dashLocation={'weather'} dashName={'Weather Report'}>
             <PanelItem data={temp_data} type={ItemType.TEMP} min={12} max={85}/>
+            <PanelItem data={temp_data} type={ItemType.PRECIP} min={12} max={85}/>
+            <PanelItem data={temp_data} type={ItemType.WIND} min={12} max={85}/>
+            <PanelItem data={temp_data} type={ItemType.HUMIDITY} min={12} max={85}/>
         </DashPanel>
     )
 }

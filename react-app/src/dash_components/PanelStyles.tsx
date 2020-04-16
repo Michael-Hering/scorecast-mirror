@@ -14,6 +14,21 @@ export const DarkLabel = styled.div`
     color: ${Colors.White};
 `
 
+export const DarkLabelButtonContainer = styled.div`
+    width: 100%;
+    height: 50px;
+
+    display: grid;
+
+    place-items: center center;
+
+    text-align: center;
+
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas:
+        'empty label button';
+`
+
 export const SingleNumberBox = styled.div`
     width: 100%;
     height: 110px;
@@ -30,13 +45,10 @@ export const SingleNumberBox = styled.div`
 `
 
 export const SmallBlueTextButton = styled.div`
-    width: 100%;
-    height: 50px;
+    font-size: 12px;
 
     display: grid;
     place-items: center center;
-
-    font-size: 12px;
 
     background-color: ${Colors.Obsidian};
     color: ${Colors.BrightBlue};
@@ -59,6 +71,7 @@ export const BlueTextButton = styled.div`
 
 export const VerySmallWhiteText = styled.div`
     font-size: 16px;
+    font-weight: ligher;
 `
 
 export const SmallWhiteText = styled.div`
