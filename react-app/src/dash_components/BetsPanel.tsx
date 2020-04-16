@@ -114,7 +114,11 @@ const convertBetsToJSX = (bets: Bet[]) => {
                     <LargeWhiteText>{element.odds}</LargeWhiteText>
                 </OddsBox>
                 <LineBox>
-                    <img src={BetLine} />
+                    <img
+                        src={BetLine}
+                        alt={'bet results'}
+                        style={{ width: '30%', height: 'auto' }}
+                    />
                 </LineBox>
                 <StatusBox style={{ backgroundColor: statusColor }}>
                     {element.status}

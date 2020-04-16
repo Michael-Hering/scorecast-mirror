@@ -5,7 +5,7 @@ export const BetsItem = styled.div`
     width: 100%;
 
     display: grid;
-    grid-template-columns: 1fr 1fr auto 2fr;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
     place-items: center center;
 
     font-style: normal;
@@ -17,7 +17,7 @@ export const BetsItem = styled.div`
 
 export const ValBox = styled.div`
     width: 100%;
-    height: 110px;
+    height: 100px;
 
     display: grid;
     place-items: center center;
@@ -32,7 +32,7 @@ export const ValBox = styled.div`
 
 export const OddsBox = styled.div`
     width: 100%;
-    height: 110px;
+    height: 100px;
 
     display: flex;
     flex-direction: column;
@@ -45,6 +45,7 @@ export const OddsBox = styled.div`
 
 export const LineBox = styled.div`
     width: 100%;
+    height: 100px;
 
     display: grid;
     place-items: center center;
@@ -54,19 +55,21 @@ export const LineBox = styled.div`
 
 export const StatusBox = styled.div`
     width: 100%;
+    height: 100px;
 
     display: grid;
     place-items: center center;
 
     text-align: center;
+    font-size: 30px;
 
-    background-color: ${Colors.DarkWhite};
+    /* background-color: ${Colors.DarkWhite}; */
 `
 
 export const SmallWhiteText = styled.div`
-    font-size: 20px;
+    font-size: 15px;
 `
 
 export const LargeWhiteText = styled.div`
-    font-size: 40px;
+    font-size: 30px;
 `
