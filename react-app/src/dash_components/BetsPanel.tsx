@@ -84,6 +84,7 @@ const convertBetsToJSX = (bets: Bet[]) => {
                 break
 
             default:
+                weatherColor = 'red'
                 break
         }
 
@@ -101,6 +102,7 @@ const convertBetsToJSX = (bets: Bet[]) => {
                 break
 
             default:
+                statusColor = 'red'
                 break
         }
 

@@ -62,8 +62,6 @@ export const StatusBox = styled.div`
 
     text-align: center;
     font-size: 30px;
-
-    /* background-color: ${Colors.DarkWhite}; */
 `
 
 export const SmallWhiteText = styled.div`
