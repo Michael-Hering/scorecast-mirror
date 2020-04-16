@@ -1,18 +1,6 @@
 import styled from '@emotion/styled'
 import { Colors } from 'common/colors/Colors'
 
-export const WeatherContainer = styled.div`
-    width: 100%;
-    height: 150px;
-
-    display: grid;
-    place-items: center center;
-
-    grid-template-areas:
-        'a a a'
-        'b b c';
-`
-
 export const MinMaxContainer = styled.div`
     width: 100%;
     height: 90px;
@@ -59,4 +47,16 @@ export const GraphContainer = styled.div`
 
     background-color: ${Colors.NavyBlue};
     box-sixing: border-box;
+`
+
+export const TooltipContainer = styled.div`
+    width: 50px;
+    height: 100%;
+
+    background-color: ${Colors.LightishBlue};
+    text-align: center;
+`
+
+export const TooltipText = styled.div`
+    font-size: 12px;
 `
