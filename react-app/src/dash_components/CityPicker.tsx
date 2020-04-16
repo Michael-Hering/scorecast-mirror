@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Colors } from 'common/colors/Colors';
 
 export const CityPicker = ({ city, setCity }: Props) => {
 
@@ -37,9 +38,9 @@ export const CityPicker = ({ city, setCity }: Props) => {
   
   const dropdownItems = cities.map((cityName) => {
     if (city === cityName) {
-      return <Dropdown.Item onClick={() => {setCity(cityName);}} active>{cityName}</Dropdown.Item> 
+      return <Dropdown.Item className="dropdown-item" style={{color: Colors.White}} onClick={() => {setCity(cityName);}} active>{cityName}</Dropdown.Item> 
     } else {
-      return <Dropdown.Item onClick={() => {setCity(cityName);}}>{cityName}</Dropdown.Item> 
+      return <Dropdown.Item className="dropdown-item" style={{color: Colors.White}} onClick={() => {setCity(cityName);}}>{cityName}</Dropdown.Item> 
     }
   })
 
@@ -48,7 +49,7 @@ export const CityPicker = ({ city, setCity }: Props) => {
       <Dropdown as={ButtonGroup}
         onClick={() => {setIsOpen(!isOpen);}}>
         <Dropdown.Toggle id="city-picker-button" variant="secondary">{city}</Dropdown.Toggle>
-        <Dropdown.Menu style={{height: isOpen ? "600px" : "100%", overflowY: "scroll" }}>
+        <Dropdown.Menu id="city-picker-background" style={{height: isOpen ? "600px" : "100%", overflowY: "scroll" }}>
           {dropdownItems}
         </Dropdown.Menu>
       </Dropdown>{' '}
