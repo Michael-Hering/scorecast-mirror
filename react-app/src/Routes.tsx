@@ -7,25 +7,6 @@ import { Profile } from 'pages/Profile'
 import { Auth0Provider } from 'react-auth0-spa'
 import config from 'auth_config.json'
 
-const AuthenticatedProfile = () => {
-    const history = useHistory()
-
-    const onRedirectCallback = () => {
-        history.push('/profile')
-    }
-
-    return (
-        <Auth0Provider
-            domain={config.domain}
-            client_id={config.clientId}
-            redirect_uri={window.location.origin + '/profile'}
-            onRedirectCallback={onRedirectCallback}
-        >
-            <Profile />
-        </Auth0Provider>
-    )
-}
-
 export const Routes = () => {
     const history = useHistory()
 
