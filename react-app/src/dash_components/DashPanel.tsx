@@ -3,7 +3,6 @@ import {
     DashPanelContainer,
     DashPane,
     DashPanelTitle,
-    DashPaneItem,
 } from 'dash_components/DashPanelStyles'
 
 export const DashPanel = ({ dashLocation, dashName, children }: Props) => {
