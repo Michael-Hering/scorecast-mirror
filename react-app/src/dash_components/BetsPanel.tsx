@@ -10,6 +10,7 @@ import {
     StatusBox,
     SmallWhiteText,
     LargeWhiteText,
+    BetText,
 } from 'dash_components/BetsPanelStyles'
 import BetLine from 'common/assets/BetLine.png'
 
@@ -125,6 +126,18 @@ const convertBetsToJSX = (bets: Bet[]) => {
                 <StatusBox style={{ backgroundColor: statusColor }}>
                     {element.status}
                 </StatusBox>
+                <BetText>
+                    <LargeWhiteText>
+                        {element.weatherFeature +
+                            ' ' +
+                            element.type +
+                            ' ' +
+                            element.val}
+                    </LargeWhiteText>
+                    <SmallWhiteText>
+                        {element.date.toLocaleDateString()}
+                    </SmallWhiteText>
+                </BetText>
             </BetsItem>
         )
     }

@@ -6,6 +6,10 @@ export const BetsItem = styled.div`
 
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 2fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        'val odds line status'
+        'text text text text';
     place-items: center center;
 
     font-style: normal;
@@ -62,6 +66,16 @@ export const StatusBox = styled.div`
 
     text-align: center;
     font-size: 30px;
+`
+
+export const BetText = styled.div`
+    grid-area: text;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    width: 100%;
+
+    text-align: center;
 `
 
 export const SmallWhiteText = styled.div`
