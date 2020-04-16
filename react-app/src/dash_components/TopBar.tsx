@@ -1,4 +1,6 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+
 import { Logo } from 'common/assets/Logo'
 import ProfilePic from 'common/assets/ProfilePic.png'
 
@@ -13,12 +15,14 @@ import {
 } from 'dash_components/TopBarStyles'
 
 export const TopBar = ({ city }: Props) => {
+    const history = useHistory()
+
     const changeCityClicked = () => {
         alert('Lolno. Only Denver right now.')
     }
 
     const profileClicked = () => {
-        alert('There are no individuals, only the one.')
+        history.push('/profile')
     }
 
     return (
