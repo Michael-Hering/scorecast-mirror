@@ -14,8 +14,11 @@ import {
     CityContainer,
 } from 'dash_components/TopBarStyles'
 
+import { useAuth0 } from 'react-auth0-spa'
+
 export const TopBar = ({ city }: Props) => {
     const history = useHistory()
+    const { user } = useAuth0()
 
     const changeCityClicked = () => {
         alert('Lolno. Only Denver right now.')
@@ -46,11 +49,18 @@ export const TopBar = ({ city }: Props) => {
             <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
-                    src={ProfilePic}
+                    src={
+                        user
+                            ? user.picture
+                                ? user.picture
+                                : ProfilePic
+                            : ProfilePic
+                    }
                     style={{
                         width: '30px',
                         height: 'auto',
                         marginRight: '4px',
+                        borderRadius: '99px',
                     }}
                     alt="profile"
                 />
