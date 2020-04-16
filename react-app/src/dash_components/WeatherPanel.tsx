@@ -4,7 +4,7 @@ import { Colors } from 'common/colors/Colors'
 
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { WeatherContainer, MinMaxElement, GraphContainer, WeatherItem, MinMaxContainer } from './WeatherPanelStyles';
-import { DarkLabel, SmallBlueTextButton, SingleNumberBox, VerySmallWhiteText, MediumWhiteText } from './PanelStyles';
+import { DarkLabel, BlueTextButton, SingleNumberBox, VerySmallWhiteText, MediumWhiteText } from './PanelStyles';
 
 const temp_data = [
     {hour: '00', value: 25}, 
@@ -79,6 +79,12 @@ const MinMax = ({min, max}: {min: number, max: number}) => {
 }
 
 const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Array<DataItem>, type: ItemType}) => {
+    const [isShowingHistogram, setIsShowingHistogram] = useState(false);
+
+    const showHistogramClicked = () => {
+        setIsShowingHistogram(!isShowingHistogram);
+    }
+    
     let labelString: string = ''
 
     switch (type) {
@@ -89,9 +95,12 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
 
     return (
         <WeatherItem>
-            <MinMax min={min} max={max}></MinMax>
-            <ForecastGraph data={data}/>
+            {!isShowingHistogram && <MinMax min={min} max={max}></MinMax>}
+            {isShowingHistogram && <ForecastGraph data={data}/>}
             <DarkLabel>{labelString}</DarkLabel>
+            <BlueTextButton onClick={showHistogramClicked}>
+                {isShowingHistogram ? 'Hide Histogram' : 'Show Histogram'}
+            </BlueTextButton>
         </WeatherItem>
     )
 }
