@@ -1,16 +1,16 @@
 import React, { CSSProperties } from 'react'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export const Logo = (props: Props) => {
-    // const history = useHistory()
+    const history = useHistory()
 
-    // const goToHome = () => {
-    //     history.push('')
-    // }
+    const goHome = () => {
+        history.push('')
+    }
 
-    // if (props.style) {
-    //     props.style.cursor = 'pointer'
-    // }
+    if (props.style) {
+        props.style.cursor = 'pointer'
+    }
 
     return (
         <svg
@@ -20,6 +20,7 @@ export const Logo = (props: Props) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={props.style}
+            onClick={goHome}
         >
             <circle
                 cx="46.6727"

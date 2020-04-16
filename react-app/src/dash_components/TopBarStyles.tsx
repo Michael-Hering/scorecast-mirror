@@ -26,6 +26,7 @@ export const TopBarContainer = styled.div`
 export const LogoText = styled.div`
     grid-area: name;
     font-weight: normal;
+    cursor: pointer;
 `
 
 export const CityContainer = styled.div`

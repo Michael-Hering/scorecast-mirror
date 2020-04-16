@@ -28,6 +28,10 @@ export const TopBar = ({ city }: Props) => {
         history.push('/profile')
     }
 
+    const goHome = () => {
+        history.push('/')
+    }
+
     return (
         <TopBarContainer>
             <Logo
@@ -39,7 +43,7 @@ export const TopBar = ({ city }: Props) => {
                     gridArea: 'logo',
                 }}
             />
-            <LogoText>Scorecast</LogoText>
+            <LogoText onClick={goHome}>Scorecast</LogoText>
             <CityContainer>
                 <CityText>{city}</CityText>
                 <ChangeCity onClick={changeCityClicked}>
