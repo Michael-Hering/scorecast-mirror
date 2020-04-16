@@ -60,3 +60,51 @@ export const BlueButton = styled.div`
     cursor: pointer;
     color: ${Colors.BrightBlue};
 `
+
+export const ThemeSwitcher = styled.div`
+    width: 100%;
+    height: 60%;
+
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        'title title'
+        'dark light'
+        'subtext subtext';
+    place-items: center center;
+`
+
+export const AccountManagement = styled.div`
+    width: 100%;
+    height: 40%;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        'title'
+        'delete'
+        'subtext';
+    place-items: center center;
+`
+
+export const TitleText = styled.div`
+    grid-area: title;
+
+    display: grid;
+    place-items: center center;
+
+    font-size: 40px;
+    font-weight: bold;
+`
+
+export const SubText = styled.div`
+    grid-area: subtext;
+
+    display: grid;
+    place-items: center center;
+
+    font-weight: normal;
+    font-style: italic;
+    font-size: 20px;
+`
