@@ -62,7 +62,7 @@ const ProfilePanel = () => {
     )
 }
 
-const Settings = () => {
+const SettingsPanel = () => {
     return (
         <DashPanel dashLocation={'settings'} dashName={'Settings'}>
             <ThemeSwitcher>
@@ -111,7 +111,7 @@ export const Profile = () => {
             <TopBar city={'Denver'} />
             <BetsPanel />
             <ProfilePanel />
-            <Settings />
+            <SettingsPanel />
         </ProfileContainer>
     ) : (
         <ProfileContainer>
