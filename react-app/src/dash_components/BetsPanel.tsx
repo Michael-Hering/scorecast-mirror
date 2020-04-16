@@ -53,6 +53,33 @@ const bets: Bet[] = [
         weatherFeature: 'Min Temp',
         status: 'LOSS',
     },
+    {
+        betID: 'test',
+        date: new Date(),
+        type: 'OVER',
+        odds: -100,
+        val: 67,
+        weatherFeature: 'Total Precip',
+        status: 'PENDING',
+    },
+    {
+        betID: 'test',
+        date: new Date(),
+        type: 'OVER',
+        odds: -100,
+        val: 44,
+        weatherFeature: 'Max Temp',
+        status: 'WIN',
+    },
+    {
+        betID: 'test',
+        date: new Date(),
+        type: 'UNDER',
+        odds: 100,
+        val: 72,
+        weatherFeature: 'Min Temp',
+        status: 'LOSS',
+    },
 ]
 
 const convertBetsToJSX = (bets: Bet[]) => {
