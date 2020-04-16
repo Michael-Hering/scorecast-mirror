@@ -7,16 +7,9 @@ import {
     ProfileText,
     LogoText,
     ProfileBox,
-    CityText,
-    ChangeCity,
-    CityContainer,
 } from 'dash_components/TopBarStyles'
 
-export const TopBar = ({ city }: Props) => {
-    const changeCityClicked = () => {
-        alert('Lolno. Only Denver right now.')
-    }
-
+export const TopBar = () => {
     const profileClicked = () => {
         alert('There are no individuals, only the one.')
     }
@@ -33,12 +26,6 @@ export const TopBar = ({ city }: Props) => {
                 }}
             />
             <LogoText>Scorecast</LogoText>
-            <CityContainer>
-                <CityText>{city}</CityText>
-                <ChangeCity onClick={changeCityClicked}>
-                    (change city)
-                </ChangeCity>
-            </CityContainer>
             <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
@@ -53,8 +40,4 @@ export const TopBar = ({ city }: Props) => {
             </ProfileBox>
         </TopBarContainer>
     )
-}
-
-interface Props {
-    city: string
 }
