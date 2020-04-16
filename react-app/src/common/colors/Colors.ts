@@ -4,6 +4,11 @@ export const Colors = {
     BrightBlue: '#00B2FF', //"Scorecast Blue"
     DarkWhite: '#DEDEDE', //for the panel titles lol
     LowTempBlue: '#006197',
+    MaxTempRed: '#970000',
+    NavyBlue: '#1F1F2C', //used for odds and histogram BGs
+    RainBlue: '#184C69', //used for precipitation
+    LightGray: '#585858', //used for wind speed
+    LightishBlue: '#3A4184', //used for humidity
     White: '#FFFFFF',
     Black: '#000000',
 }
