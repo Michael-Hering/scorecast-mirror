@@ -135,7 +135,7 @@ const convertBetsToJSX = (bets: Bet[]) => {
         }
 
         betItems.push(
-            <BetsItem>
+            <BetsItem key={i}>
                 <ValBox style={{ backgroundColor: weatherColor }}>
                     {element.val}
                 </ValBox>

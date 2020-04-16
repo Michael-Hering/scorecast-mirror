@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Colors } from 'common/colors/Colors'
 
 export const ProfileContainer = styled.div`
     width: 100%;
@@ -25,4 +26,37 @@ export const ProfileContainer = styled.div`
     overflow-y: hidden;
 
     cursor: default;
+`
+
+export const ProfileInfo = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center center;
+`
+
+export const ProfileActions = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    text-align: center;
+
+    font-size: 40px;
+    font-weight: bold;
+`
+
+export const BlueButton = styled.div`
+    margin-top: 20px;
+
+    font-size: 30px;
+    font-weight: bold;
+
+    cursor: pointer;
+    color: ${Colors.BrightBlue};
 `
