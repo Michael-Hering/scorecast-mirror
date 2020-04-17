@@ -18,7 +18,7 @@ export const ProfileContainer = styled.div`
 
     /* Scale gutters for smaller screens */
     @media screen and (max-width: 1900px) {
-        grid-template-columns: 2vw 1fr 1fr 1fr 2vw;
+        grid-template-columns: 2vw 1fr 1fr 2vw;
     }
 
     background: linear-gradient(119.36deg, #00577c 0%, #003248 100%);
@@ -63,7 +63,6 @@ export const BlueButton = styled.div`
 
 export const ThemeSwitcher = styled.div`
     width: 100%;
-    height: 60%;
 
     display: grid;
     grid-template-rows: auto auto auto;
@@ -77,7 +76,6 @@ export const ThemeSwitcher = styled.div`
 
 export const AccountManagement = styled.div`
     width: 100%;
-    height: 40%;
 
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
@@ -91,6 +89,9 @@ export const AccountManagement = styled.div`
 export const TitleText = styled.div`
     grid-area: title;
 
+    margin-top: 10px;
+    margin-bottom: 10px;
+
     display: grid;
     place-items: center center;
 
@@ -100,6 +101,9 @@ export const TitleText = styled.div`
 
 export const SubText = styled.div`
     grid-area: subtext;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
 
     display: grid;
     place-items: center center;
