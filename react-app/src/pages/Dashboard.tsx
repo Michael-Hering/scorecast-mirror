@@ -5,6 +5,7 @@ import { TopBar } from 'dash_components/TopBar'
 
 import { DashPanel } from 'dash_components/DashPanel'
 import { OddsPanel } from 'dash_components/OddsPanel'
+import { WeatherPanel } from 'dash_components/WeatherPanel'
 import { CityPicker } from 'dash_components/CityPicker'
 
 export const Dashboard = () => {
@@ -15,10 +16,7 @@ export const Dashboard = () => {
         <DashboardContainer>
             <CityPicker city={city} setCity={(cityName: string) => {setCity(cityName);}}/>
             <TopBar />
-            <DashPanel
-                dashLocation={'weather'}
-                dashName={'Weather Report'}
-            ></DashPanel>
+            <WeatherPanel />            
             <OddsPanel />
             <DashPanel
                 dashLocation={'twittertop'}
