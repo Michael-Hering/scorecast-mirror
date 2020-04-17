@@ -94,7 +94,7 @@ export const TitleText = styled.div`
     display: grid;
     place-items: center center;
 
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
 `
 
