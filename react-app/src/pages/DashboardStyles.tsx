@@ -11,8 +11,8 @@ export const DashboardContainer = styled.div`
     row-gap: 5%;
     grid-template-areas:
         'topbar topbar topbar topbar topbar'
-        '. weather odds twittertop .'
-        '. weather odds twitterbottom .'
+        '. weather odds twitter .'
+        '. weather odds twitter .'
         '. . . . . ';
 
     /* Scale gutters for smaller screens */
