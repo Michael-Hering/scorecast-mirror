@@ -3,15 +3,18 @@ import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 
 import {
-    SingleNumberBox,
-    DarkLabel,
-    BlueTextButton,
     OddsItem,
     OddsContainer,
     OddsElement,
+} from 'dash_components/OddsPanelStyles'
+
+import {
+    DarkLabel,
+    BlueTextButton,
     SmallWhiteText,
     LargeWhiteText,
-} from 'dash_components/OddsPanelStyles'
+    SingleNumberBox,
+} from 'dash_components/PanelStyles'
 
 enum ItemType {
     MINTEMP,

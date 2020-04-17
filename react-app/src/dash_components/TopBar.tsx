@@ -9,24 +9,17 @@ import {
     ProfileText,
     LogoText,
     ProfileBox,
-    CityText,
-    ChangeCity,
-    CityContainer,
 } from 'dash_components/TopBarStyles'
 
 import { useAuth0 } from 'react-auth0-spa'
 
-export const TopBar = ({ city }: Props) => {
+export const TopBar = () => {
     const history = useHistory()
     const auth = useAuth0()
-    let user = undefined
+    let user: any = undefined
 
     if (auth) {
         user = auth.user
-    }
-
-    const changeCityClicked = () => {
-        alert('Lolno. Only Denver right now.')
     }
 
     const profileClicked = () => {
@@ -49,12 +42,7 @@ export const TopBar = ({ city }: Props) => {
                 }}
             />
             <LogoText onClick={goHome}>Scorecast</LogoText>
-            <CityContainer>
-                <CityText>{city}</CityText>
-                <ChangeCity onClick={changeCityClicked}>
-                    (change city)
-                </ChangeCity>
-            </CityContainer>
+            <LogoText>Scorecast</LogoText>
             <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
@@ -76,8 +64,4 @@ export const TopBar = ({ city }: Props) => {
             </ProfileBox>
         </TopBarContainer>
     )
-}
-
-interface Props {
-    city: string
 }

@@ -29,26 +29,6 @@ export const LogoText = styled.div`
     cursor: pointer;
 `
 
-export const CityContainer = styled.div`
-    grid-area: city;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`
-
-export const CityText = styled.div`
-    font-weight: bold;
-    margin-left: 5px;
-`
-
-export const ChangeCity = styled.div`
-    margin-left: 5px;
-    font-size: 17px;
-    cursor: pointer;
-    color: ${Colors.BrightBlue};
-`
-
 export const ProfileBox = styled.div`
     grid-area: profile;
     place-self: center center;
