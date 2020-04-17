@@ -108,14 +108,14 @@ export const Profile = () => {
 
     return isAuthenticated ? (
         <ProfileContainer>
-            <TopBar city={'Denver'} />
+            <TopBar />
             <BetsPanel />
             <ProfilePanel />
             <SettingsPanel />
         </ProfileContainer>
     ) : (
         <ProfileContainer>
-            <TopBar city={'Denver'} />
+            <TopBar />
             <ProfilePanel />
         </ProfileContainer>
     )

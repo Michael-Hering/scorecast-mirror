@@ -42,7 +42,6 @@ export const TopBar = () => {
                 }}
             />
             <LogoText onClick={goHome}>Scorecast</LogoText>
-            <LogoText>Scorecast</LogoText>
             <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
