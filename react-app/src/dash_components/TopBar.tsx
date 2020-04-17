@@ -18,7 +18,12 @@ import { useAuth0 } from 'react-auth0-spa'
 
 export const TopBar = ({ city }: Props) => {
     const history = useHistory()
-    const { user } = useAuth0()
+    const auth = useAuth0()
+    let user = undefined
+
+    if (auth) {
+        user = auth.user
+    }
 
     const changeCityClicked = () => {
         alert('Lolno. Only Denver right now.')

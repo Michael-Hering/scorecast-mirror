@@ -1,31 +1,15 @@
 import React from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { PageNotFound } from 'pages/PageNotFound'
 import { Dashboard } from 'pages/Dashboard'
 import { Profile } from 'pages/Profile'
 
-import { Auth0Provider } from 'react-auth0-spa'
-import config from 'auth_config.json'
-
 export const Routes = () => {
-    const history = useHistory()
-
-    const onRedirectCallback = () => {
-        history.push('/profile')
-    }
-
     return (
-        <Auth0Provider
-            domain={config.domain}
-            client_id={config.clientId}
-            redirect_uri={window.location.origin + '/profile'}
-            onRedirectCallback={onRedirectCallback}
-        >
-            <Switch>
-                <Route exact={true} path="/" component={Dashboard} />
-                <Route exact={true} path="/profile" component={Profile} />
-                <Route component={PageNotFound} />
-            </Switch>
-        </Auth0Provider>
+        <Switch>
+            <Route exact={true} path="/" component={Dashboard} />
+            <Route exact={true} path="/profile" component={Profile} />
+            <Route component={PageNotFound} />
+        </Switch>
     )
 }
