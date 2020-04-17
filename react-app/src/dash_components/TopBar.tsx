@@ -1,4 +1,6 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+
 import { Logo } from 'common/assets/Logo'
 import ProfilePic from 'common/assets/ProfilePic.png'
 
@@ -9,9 +11,23 @@ import {
     ProfileBox,
 } from 'dash_components/TopBarStyles'
 
+import { useAuth0 } from 'react-auth0-spa'
+
 export const TopBar = () => {
+    const history = useHistory()
+    const auth = useAuth0()
+    let user: any = undefined
+
+    if (auth) {
+        user = auth.user
+    }
+
     const profileClicked = () => {
-        alert('There are no individuals, only the one.')
+        history.push('/profile')
+    }
+
+    const goHome = () => {
+        history.push('/')
     }
 
     return (
@@ -25,15 +41,22 @@ export const TopBar = () => {
                     gridArea: 'logo',
                 }}
             />
-            <LogoText>Scorecast</LogoText>
+            <LogoText onClick={goHome}>Scorecast</LogoText>
             <ProfileBox onClick={profileClicked}>
                 <ProfileText>Profile</ProfileText>
                 <img
-                    src={ProfilePic}
+                    src={
+                        user
+                            ? user.picture
+                                ? user.picture
+                                : ProfilePic
+                            : ProfilePic
+                    }
                     style={{
                         width: '30px',
                         height: 'auto',
                         marginRight: '4px',
+                        borderRadius: '99px',
                     }}
                     alt="profile"
                 />

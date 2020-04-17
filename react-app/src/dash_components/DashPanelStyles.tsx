@@ -24,16 +24,6 @@ export const DashPane = styled.div`
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
 `
 
-export const DashPaneItem = styled.div`
-    /* height: auto;  TODO: ADD BACK*/
-    height: 100px;
-    width: 100%;
-
-    background-color: ${Colors.LowTempBlue};
-    box-sizing: border-box;
-    border: 2px solid ${Colors.LightObsidian};
-`
-
 //TEXT
 export const DashPanelTitle = styled.div`
     margin-bottom: 10px;

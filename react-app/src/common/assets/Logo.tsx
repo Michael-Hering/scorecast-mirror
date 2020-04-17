@@ -1,16 +1,16 @@
 import React, { CSSProperties } from 'react'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export const Logo = (props: Props) => {
-    // const history = useHistory()
+    const history = useHistory()
 
-    // const goToHome = () => {
-    //     history.push('')
-    // }
+    const goHome = () => {
+        history.push('')
+    }
 
-    // if (props.style) {
-    //     props.style.cursor = 'pointer'
-    // }
+    if (props.style) {
+        props.style.cursor = 'pointer'
+    }
 
     return (
         <svg
@@ -20,6 +20,7 @@ export const Logo = (props: Props) => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             style={props.style}
+            onClick={goHome}
         >
             <circle
                 cx="46.6727"
@@ -27,7 +28,7 @@ export const Logo = (props: Props) => {
                 r="43.3385"
                 fill="#00B2FF"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="1.5"
@@ -37,7 +38,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="53.3069"
@@ -47,7 +48,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="1.5"
@@ -57,7 +58,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="35.1292"
@@ -67,7 +68,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
             <rect
                 x="49.6714"
@@ -77,7 +78,7 @@ export const Logo = (props: Props) => {
                 rx="6.22559"
                 fill="white"
                 stroke="black"
-                stroke-width="3"
+                strokeWidth="3"
             />
         </svg>
     )
