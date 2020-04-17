@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { DashboardContainer } from 'pages/DashboardStyles'
 import { TopBar } from 'dash_components/TopBar'
 
 import { DashPanel } from 'dash_components/DashPanel'
 import { OddsPanel } from 'dash_components/OddsPanel'
+import { CityPicker } from 'dash_components/CityPicker'
 
 export const Dashboard = () => {
+  
+    const [city, setCity] = useState("Denver")
+
     return (
         <DashboardContainer>
-            <TopBar city={'Denver'} />
+            <CityPicker city={city} setCity={(cityName: string) => {setCity(cityName);}}/>
+            <TopBar />
             <DashPanel
                 dashLocation={'weather'}
                 dashName={'Weather Report'}
