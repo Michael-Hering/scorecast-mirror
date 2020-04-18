@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
 const hourly = require('./routes/hourly');
@@ -13,7 +14,7 @@ const Daily = require("./models/daily");
 
 //-----------------------------------
 // Connecting to the database
-const uri = "mongodb+srv://dbUser:lHHRGsTDThtYq8zs@scorecast-cluster-iyipd.gcp.mongodb.net/scorecast?retryWrites=true&w=majority";
+const uri = `mongodb+srv://dbUser:${process.env.MONGO_PASS}@scorecast-cluster-iyipd.gcp.mongodb.net/scorecast?retryWrites=true&w=majority`;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
