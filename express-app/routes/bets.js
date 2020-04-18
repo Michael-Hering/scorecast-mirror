@@ -4,12 +4,30 @@ const router = express.Router();
 const Bet = require('../models/bets');
 const Users = require('../models/users');
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+};
+
 router.get('/', (req, res) => {
     res.send("TESTING BETS");
 });
 
-router.get('/:email', (req, res) => {
+router.get('/:email', async (req, res) => {
+    const doc = await Users.findOne( { email: req.params.email } );
 
+    const documents = [];
+
+    await asyncForEach(doc.bets, async (bet) => {
+        console.log(bet.betId);
+        const betDoc = await Bet.find( {_id: bet.betId });
+        documents.push(betDoc);
+    });
+
+    console.log(documents);
+
+    res.send(documents);
 });
 
 router.post('/', async (req, res) => {
@@ -26,8 +44,9 @@ router.post('/', async (req, res) => {
 
     await doc.save();
 
-    var bet = { betId: doc._id.toString() }
+    var bet = { betId: doc._id }
 
+    // Update user with new bet
     Users.findOneAndUpdate(
         { email: req.body.email },
         { $push: { bets: bet }},
@@ -38,8 +57,6 @@ router.post('/', async (req, res) => {
                 console.log(success);
             }
     });
-
-    // Need to get users as well - based on email
 
     console.log(doc);
 
