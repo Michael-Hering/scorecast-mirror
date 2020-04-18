@@ -21,7 +21,7 @@ router.get('/:city', (req, res) => {
           recentDoc = newDoc[i]
         }
       }
-      var hourly = recentDoc;
+      var hourly = recentDoc[curCity];
       console.log(hourly);
       res.send(hourly);
     })

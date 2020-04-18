@@ -23,8 +23,13 @@ router.get('/:city', (req, res) => {
           recentDoc = newDoc[i]
         }
       }
-      var nextDayForecast = recentDoc;
-      res.send(nextDayForecast);
+      var todaysForecast = recentDoc[curCity][0];
+      var nextDayForecast = recentDoc[curCity][1];
+      //sending neat JSON
+      var obj = {}
+      obj["todaysForecast"] = todaysForecast
+      obj["nextDayForecast"] = nextDayForecast
+      res.send(obj);
     })
     .catch(err => console.log(err))
 });
