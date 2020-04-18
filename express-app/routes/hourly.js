@@ -3,14 +3,16 @@ const router = express.Router();
 
 const Hourly = require("../models/hourly");
 
-router.get('/wind/:city', (req, res) => {
+router.get('/:city', (req, res) => {
   var curCity = req.params.city;
   console.log(curCity)
-  Hourly.find({}, curCity).sort([['date', -1]]).limit(1)
+  Hourly.find({}).select(`${curCity} -_id`).sort('-date').limit(1)
     .exec()
     .then(doc => {
-      console.log(doc);
-      res.send(doc);
+      newDoc = JSON.parse(JSON.stringify(doc))
+      var hourly = newDoc[0].denver;
+      console.log(hourly);
+      res.send(hourly);
     })
     .catch(err => console.log(err))
 });

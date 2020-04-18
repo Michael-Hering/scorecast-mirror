@@ -5,14 +5,15 @@ const router = express.Router();
 const Daily = require("../models/daily");
 
 //Getting forecast data for given city
-router.get('/forecast/:city', (req, res) => {
+router.get('/:city', (req, res) => {
   var curCity = req.params.city;
   console.log(curCity)
-  Daily.find({}, curCity).sort([['date', -1]]).limit(1)
+  Daily.find({}).select(curCity).sort('-date').limit(1)
     .exec()
     .then(doc => {
-      console.log(doc);
-      res.send(doc);
+      newDoc = JSON.parse(JSON.stringify(doc))
+      var nextDayForecast = newDoc[0].denver[1];
+      res.send(nextDayForecast);
     })
     .catch(err => console.log(err))
 });
