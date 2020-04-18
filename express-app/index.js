@@ -17,7 +17,7 @@ const Daily = require("./models/daily");
 
 //-----------------------------------
 // Connecting to the database
-const local_uri = "mongodb://localhost:27017"
+const local_uri = "mongodb://localhost:27017/scorecast"
 const uri = "mongodb+srv://dbUser:lHHRGsTDThtYq8zs@scorecast-cluster-iyipd.gcp.mongodb.net/scorecast?retryWrites=true&w=majority";
 mongoose.connect(local_uri, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;

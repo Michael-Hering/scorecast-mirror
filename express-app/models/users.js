@@ -5,11 +5,8 @@ const userSchema = mongoose.Schema({
   username: String,
   password: String,
   bets: [{
-    date: String,
-    completionDate: String,
-    odds: Number,
-    won: Boolean,
-  }],
+    betId: mongoose.Schema.Types.ObjectId
+  }]
  });
 
  module.exports = mongoose.model('Users', userSchema)
