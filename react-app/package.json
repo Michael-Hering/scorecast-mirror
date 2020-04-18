@@ -22,6 +22,8 @@
     "react-scripts": "3.4.0",
     "react-twitter-embed": "^3.0.3",
     "recharts": "^1.8.5",
+    "prop-types":"^15.5.4",
+    "enzyme":"^3.0.0",
     "typescript": "~3.7.2",
     "uuid": "^7.0.3",
     "yarn": "^1.22.0"
