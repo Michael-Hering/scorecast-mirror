@@ -8,4 +8,4 @@ const hourlySchema = mongoose.Schema({
   }],
 }, {collection: 'hourly'});
 
-module.exports = mongoose.model('Hourly', hourlySchema)
+module.exports = mongoose.model('Hourly', hourlySchema);
