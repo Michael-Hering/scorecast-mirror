@@ -2,9 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const Bet = require('../models/bets');
+const Users = require('../models/users');
 
 router.get('/', (req, res) => {
     res.send("TESTING BETS");
+});
+
+router.get('/:email', (req, res) => {
+
 });
 
 router.post('/', async (req, res) => {
@@ -20,6 +25,21 @@ router.post('/', async (req, res) => {
     doc.status = req.body.status;
 
     await doc.save();
+
+    var bet = { betId: doc._id.toString() }
+
+    Users.findOneAndUpdate(
+        { email: req.body.email },
+        { $push: { bets: bet }},
+        function (err, success) {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log(success);
+            }
+    });
+
+    // Need to get users as well - based on email
 
     console.log(doc);
 
