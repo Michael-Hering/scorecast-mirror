@@ -1,14 +1,9 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  username: String,
-  password: String,
+  email: String,
   bets: [{
-    date: String,
-    completionDate: String,
-    odds: Number,
-    won: Boolean,
+    betId: String
   }],
  });
 
