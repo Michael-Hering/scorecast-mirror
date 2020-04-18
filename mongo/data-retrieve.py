@@ -15,20 +15,25 @@ def parseObj(obj, daily=False):
     if(rain and daily):
         # if('1h' in ret['rain'].keys()):
         ret['rain'] = obj['rain']
+        
     elif(rain and not daily):
         if('1h' in obj['rain'].keys()):
             ret['rain'] = obj['rain']['1h']
+        else:
+            ret['rain'] = 0
+    else:
+        ret['rain'] = 0
 
     if('snow' in obj.keys()):
         ret['snow'] = obj['snow']
+    else:
+        ret['snow'] = 0
 
     if(daily):
         ret['max_temp'] = obj['temp']['max']
         ret['min_temp'] = obj['temp']['min']
     else:   
         ret['temp'] = obj['temp']
-
-    # print(ret)
 
     return ret
 
@@ -104,7 +109,7 @@ def main():
     # TODO: Open client and get collections
     local_uri = 'mongodb://localhost:27017/'
     atlas_uri = secrets['mongo_uri']
-    myclient = pymongo.MongoClient(atlas_uri)
+    myclient = pymongo.MongoClient(local_uri)
     mydb = myclient['scorecast']
     histcol = mydb['historical']
     dailycol = mydb['daily']
