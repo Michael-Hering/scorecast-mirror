@@ -102,21 +102,26 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
 export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
 
+    // WEATHER DATA
+
     useEffect(() => {
         const getWeatherData = async () => {
             setIsLoading(true)
 
-            console.log('Getting weather data')
+            console.log(
+                `Getting weather data: http://localhost:5000/daily/${city.toLowerCase()}`
+            )
             const response = await fetch(
                 `http://localhost:5000/daily/${city.toLowerCase()}`
             )
-            console.log(response)
+            const data = await response.json()
+            console.log(data)
 
             setIsLoading(false)
         }
 
         getWeatherData()
-    }, [])
+    }, [city])
 
     return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
