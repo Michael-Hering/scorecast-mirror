@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
 const bets = require('./routes/bets');
@@ -17,9 +18,8 @@ const Daily = require("./models/daily");
 
 //-----------------------------------
 // Connecting to the database
-const local_uri = "mongodb://localhost:27017/scorecast"
-const uri = "mongodb+srv://dbUser:lHHRGsTDThtYq8zs@scorecast-cluster-iyipd.gcp.mongodb.net/scorecast?retryWrites=true&w=majority";
-mongoose.connect(local_uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+const uri = `mongodb+srv://dbUser:${process.env.MONGO_PASS}@scorecast-cluster-iyipd.gcp.mongodb.net/scorecast?retryWrites=true&w=majority`;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

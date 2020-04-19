@@ -10,6 +10,8 @@ const dailySchema = mongoose.Schema({
       description: String,
       icon: String,
     }],
+    snow: {type: Number, default: 0, required: true},
+    rain: {type: Number, default: 0, require: true},
     max_temp: Number,
     min_temp: Number
   }]
