@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
+import Loader from 'react-spinners/PulseLoader'
 
 import {
     OddsItem,
     OddsContainer,
     OddsElement,
+    LoaderContainer,
 } from 'dash_components/OddsPanelStyles'
 
 import {
@@ -153,7 +155,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
         </DashPanel>
     ) : (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <LargeWhiteText>Loading...</LargeWhiteText>
+            <LoaderContainer>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
         </DashPanel>
     )
 }

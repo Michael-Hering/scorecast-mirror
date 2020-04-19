@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { css } from '@emotion/core'
 import { Colors } from 'common/colors/Colors'
 
 export const OddsItem = styled.div`
@@ -40,4 +41,12 @@ export const OddsElement = styled.div`
     background-color: ${Colors.NavyBlue};
     border: 1px solid ${Colors.Black};
     box-sizing: border-box;
+`
+
+export const LoaderContainer = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    place-items: center center;
 `
