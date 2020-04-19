@@ -17,17 +17,26 @@ router.get('/', (req, res) => {
 router.get('/:email', async (req, res) => {
     const doc = await Users.findOne( { email: req.params.email } );
 
-    const documents = [];
+    if(doc == null) {
+        //no users exists, create one
+        var newUser = new Users({email: req.params.email, bets: []})
+        newUser.save(function (err, newUser) {
+            if (err) return console.error(err);
+            console.log(newUser.email + " user added to db.");
+          });
+        res.send(newUser.bets)
+    } else {
+        const documents = [];
 
-    await asyncForEach(doc.bets, async (bet) => {
-        console.log(bet.betId);
-        const betDoc = await Bet.find( {_id: bet.betId });
-        documents.push(betDoc);
-    });
-
-    console.log(documents);
-
-    res.send(documents);
+        await asyncForEach(doc.bets, async (bet) => {
+            console.log(bet.betId);
+            const betDoc = await Bet.find( {_id: bet.betId });
+            documents.push(betDoc);
+        });
+    
+        console.log(documents);
+        res.send(documents);
+    }
 });
 
 router.post('/', async (req, res) => {
