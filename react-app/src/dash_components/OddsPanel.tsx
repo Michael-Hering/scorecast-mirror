@@ -103,6 +103,11 @@ export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
 
     // WEATHER DATA
+    const [minTempVal, setMinTempVal] = useState<number>(0)
+    const [maxTempVal, setMaxTempVal] = useState<number>(0)
+    const [precipVal, setPrecipVal] = useState<number>(0)
+    const [windVal, setWindVal] = useState<number>(0)
+    const [humidityVal, setHumidityVal] = useState<number>(0)
 
     useEffect(() => {
         const getWeatherData = async () => {
@@ -115,7 +120,21 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 `http://localhost:5000/daily/${city.toLowerCase()}`
             )
             const data = await response.json()
-            console.log(data)
+            const forecast = data.nextDayForecast
+
+            setMinTempVal(forecast.min_temp)
+            setMaxTempVal(forecast.max_temp)
+            setWindVal(forecast.windspeed)
+
+            if (forecast.rain !== 0 && forecast.snow !== 0) {
+                setPrecipVal(forecast.rain + forecast.snow)
+            } else if (forecast.rain !== 0) {
+                setPrecipVal(forecast.rain)
+            } else if (forecast.snow !== 0) {
+                setPrecipVal(forecast.snow)
+            } else {
+                setPrecipVal(0)
+            }
 
             setIsLoading(false)
         }
@@ -125,11 +144,11 @@ export const OddsPanel = ({ city }: { city: string }) => {
 
     return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <PanelItem val={70} type={ItemType.MINTEMP} />
-            <PanelItem val={80} type={ItemType.MAXTEMP} />
-            <PanelItem val={4.1} type={ItemType.PRECIP} />
-            <PanelItem val={34} type={ItemType.WIND} />
-            <PanelItem val={77} type={ItemType.HUMIDITY} />
+            <PanelItem val={minTempVal} type={ItemType.MINTEMP} />
+            <PanelItem val={maxTempVal} type={ItemType.MAXTEMP} />
+            <PanelItem val={precipVal} type={ItemType.PRECIP} />
+            <PanelItem val={windVal} type={ItemType.WIND} />
+            <PanelItem val={humidityVal} type={ItemType.HUMIDITY} />
         </DashPanel>
     ) : (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
