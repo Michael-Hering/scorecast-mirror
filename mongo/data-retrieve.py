@@ -35,8 +35,6 @@ def parseObj(obj, daily=False):
     else:   
         ret['temp'] = obj['temp']
 
-    # print(ret)
-
     return ret
 
 '''
