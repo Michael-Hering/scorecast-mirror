@@ -125,6 +125,7 @@ export const OddsPanel = ({ city }: { city: string }) => {
             setMinTempVal(forecast.min_temp)
             setMaxTempVal(forecast.max_temp)
             setWindVal(forecast.windspeed)
+            setHumidityVal(-99)
 
             if (forecast.rain !== 0 && forecast.snow !== 0) {
                 setPrecipVal(forecast.rain + forecast.snow)
