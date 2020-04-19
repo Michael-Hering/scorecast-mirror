@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 
@@ -99,14 +99,33 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
     )
 }
 
-export const OddsPanel = () => {
-    return (
+export const OddsPanel = ({ city }: { city: string }) => {
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const getWeatherData = async () => {
+            setIsLoading(true)
+
+            console.log('Getting weather data')
+            const response = await fetch(`http://localhost:5000/daily/${city}`)
+
+            setIsLoading(false)
+        }
+
+        getWeatherData()
+    }, [])
+
+    return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
             <PanelItem val={70} type={ItemType.MINTEMP} />
             <PanelItem val={80} type={ItemType.MAXTEMP} />
             <PanelItem val={4.1} type={ItemType.PRECIP} />
             <PanelItem val={34} type={ItemType.WIND} />
             <PanelItem val={77} type={ItemType.HUMIDITY} />
+        </DashPanel>
+    ) : (
+        <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
+            <LargeWhiteText>Loading...</LargeWhiteText>
         </DashPanel>
     )
 }
