@@ -8,7 +8,6 @@ const betsSchema = mongoose.Schema({
     val: Number,
     weatherFeature: String,
     status: String,
-    versionKey: false
-}, {collection: 'bets'});
+}, {collection: 'bets', versionKey: false});
 
 module.exports = mongoose.model('Bets', betsSchema)

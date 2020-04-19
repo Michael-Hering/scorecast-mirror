@@ -6,8 +6,7 @@ const userSchema = mongoose.Schema({
     _id: false,
     betId: mongoose.Schema.Types.ObjectId
   }],
-  versionKey: false
- }, {collection: 'users'});
+ }, {collection: 'users', versionKey: false});
 
  module.exports = mongoose.model('Users', userSchema);
  
