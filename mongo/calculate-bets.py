@@ -12,7 +12,7 @@ import json
 def updateBetStatus(db, bet, status):
   bets_collection = db['bets']
   bets_collection.find_one_and_update(
-    {"id": bet["id"]}, 
+    {"_id": bet["_id"]}, 
     {"$set": {"status": status}}
   )
   return
@@ -190,7 +190,7 @@ def main():
     # Open client and get collections
     local_uri = 'mongodb://localhost:27017/'
     atlas_uri = secrets['mongo_uri']
-    myclient = pymongo.MongoClient(atlas_uri)
+    myclient = pymongo.MongoClient(local_uri)
     mydb = myclient['scorecast']
 
     bets_collection = mydb['bets']
