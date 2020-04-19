@@ -4,22 +4,13 @@ const app = express();
 const users = require('./routes/users');
 const tweets = require('./routes/tweets');
 const path = require('path')
+const cors = require('cors')
 
 
 //-----------------------------------
 app.use(express.json())       // to support JSON-encoded bodies
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // localhost for dev env
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost"); // docker env
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors()) // Allow all CORS requests
 
 app.use('/api/users', users);
 
