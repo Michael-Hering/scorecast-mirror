@@ -1,74 +1,69 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode, useEffect, useRef } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
-import { Colors } from 'common/colors/Colors'
-import { Spinner } from 'react-bootstrap'
-import axios from 'axios'
 import { v4 as uuid } from 'uuid'
-
-const { TwitterTweetEmbed } = require('react-twitter-embed')
+import { Colors } from 'common/colors/Colors'
+import Loader from 'react-spinners/PulseLoader'
+import { LoaderContainer, TweetsContainer, TweetBox } from './TweetPanelStyles'
+import { Tweet } from 'react-twitter-widgets'
 
 export const TweetPanel = ({ city }: Props) => {
-    // Set up a state for the function
-    const [tweetState, setTweetState] = useState({
-        loaded: false,
-        city: city,
-        tweetComponents: null,
-    })
+    const [isLoading, setIsLoading] = useState(true)
+    const [tweets, setTweets] = useState<ReactNode[]>([])
 
-    // Check if the city on the state is stale, if so we want to hit our API and re-render
-    if (tweetState.city != city) {
-        tweetState.loaded = false
-    }
+    const ref = useRef<HTMLDivElement>(null) // to get panel size
 
-    if (!tweetState.loaded) {
-        // Get the tweets for our city, and update our state when done
-        axios
-            .post('http://localhost:5000/api/tweets', { topic: city })
-            .then((res: any) => {
-                const components: any = []
-                res.data.forEach((tweetRes: any) => {
-                    const tweet = JSON.parse(tweetRes)
-                    components.unshift(
-                        <TwitterTweetEmbed
-                            tweetId={tweet.id_str}
+    useEffect(() => {
+        const getTweets = async () => {
+            setIsLoading(true)
+
+            const tweetsArray: ReactNode[] = []
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic: city }),
+            }
+
+            const response = await fetch(
+                'http://localhost:5000/api/tweets',
+                requestOptions
+            )
+            const data: any[] = await response.json()
+
+            let maxTweetWidth = ref.current ? ref.current.offsetWidth : 10
+            maxTweetWidth = maxTweetWidth > 500 ? 500 : maxTweetWidth
+
+            for (let i = 0; i < data.length; i++) {
+                const element = JSON.parse(data[i])
+                tweetsArray.push(
+                    <TweetBox key={uuid()} style={{ width: maxTweetWidth }}>
+                        <Tweet
+                            tweetId={element.id_str}
                             key={uuid()}
-                            theme="dark"
+                            options={{ theme: 'dark', width: maxTweetWidth }}
                         />
-                    )
-                })
+                    </TweetBox>
+                )
+            }
 
-                // State update
-                setTweetState({
-                    loaded: true,
-                    city: city,
-                    tweetComponents: components,
-                })
-            })
+            setTweets(tweetsArray)
+            setIsLoading(false)
+        }
 
-        // State indicated tweets are loading, show a spinner
-        return (
-            <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
-                <div
-                    style={{
-                        margin: '55% auto auto auto',
-                        width: '10%',
-                        height: '10%',
-                    }}
-                >
-                    <Spinner animation="grow" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </Spinner>
-                </div>
-            </DashPanel>
-        )
-    } else {
-        // State indicated tweets are ready, display them
-        return (
-            <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
-                {tweetState.tweetComponents}
-            </DashPanel>
-        )
-    }
+        getTweets()
+    }, [city])
+
+    return !isLoading ? (
+        <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
+            <TweetsContainer>{tweets}</TweetsContainer>
+        </DashPanel>
+    ) : (
+        <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
+            <LoaderContainer ref={ref}>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
+        </DashPanel>
+    )
 }
 
 interface Props {
