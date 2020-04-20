@@ -7,6 +7,7 @@ RUN apk add yarn
 RUN apk add curl
 RUN yarn
 COPY . ./
+RUN yarn install
 RUN yarn build
 
 FROM nginx:1.16.1-alpine

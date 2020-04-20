@@ -4,10 +4,18 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const path = require('path');
 
 require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
+const tweets = require('./routes/tweets');
+
+
+//-----------------------------------
+app.use(express.json())       // to support JSON-encoded bodies
+
+app.use(cors()) // Allow all CORS requests
 const bets = require('./routes/bets');
 const hourly = require('./routes/hourly');
 const daily = require('./routes/daily');
@@ -28,11 +36,14 @@ app.use(express.json())
 app.use(cors())
 app.use(bodyParser.json());
 
+
 // Routing
 app.use('/api/users', users);
 app.use('/api/bets', bets);
 app.use('/hourly', hourly);
 app.use('/daily', daily);
+app.use('/api/tweets', tweets);
+
 
 // PORT
 const port = process.env.PORT || 5000
