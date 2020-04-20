@@ -24,7 +24,7 @@ export const OddsContainer = styled.div`
     grid-template-rows: 1fr 50px;
     grid-template-areas:
         'under over'
-        'bunder bover';
+        'place place';
 `
 
 export const OddsElement = styled.div`
@@ -40,4 +40,14 @@ export const OddsElement = styled.div`
     background-color: ${Colors.NavyBlue};
     border: 1px solid ${Colors.Black};
     box-sizing: border-box;
+`
+
+export const OddsLoadingContainer = styled.div`
+    grid-area: place;
+
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    place-items: center center;
 `

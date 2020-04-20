@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 import Loader from 'react-spinners/PulseLoader'
@@ -7,6 +7,7 @@ import {
     OddsItem,
     OddsContainer,
     OddsElement,
+    OddsLoadingContainer,
 } from 'dash_components/OddsPanelStyles'
 
 import {
@@ -17,6 +18,7 @@ import {
     SingleNumberBox,
     LoaderContainer,
 } from 'dash_components/PanelStyles'
+import { useAuth0 } from 'react-auth0-spa'
 
 enum ItemType {
     MINTEMP,
@@ -26,7 +28,55 @@ enum ItemType {
     HUMIDITY,
 }
 
-const Odds = ({ under, over }: { under: number; over: number }) => {
+const Odds = ({
+    under,
+    over,
+    weatherData,
+}: {
+    under: number
+    over: number
+    weatherData: WeatherData
+}) => {
+    const [betPlaced, setBetPlaced] = useState<boolean>(false)
+    const [betSending, setBetSending] = useState<boolean>(false)
+
+    const placeBetClicked = async (odds: number, type: string) => {
+        setBetPlaced(true)
+        setBetSending(true)
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: weatherData.city,
+                city: weatherData.city,
+                date: new Date(),
+                type: type,
+                odds: odds,
+                val: weatherData.val,
+                weatherFeature: weatherData.weatherFeature,
+                status: 'pending',
+            }),
+        }
+
+        // const response = await fetch(
+        //     'http://localhost:5000/api/tweets',
+        //     requestOptions
+        // )
+        // const data: any[] = await response.json()
+
+        console.log(`Placing bet:`)
+        console.log(requestOptions)
+    }
+
+    const placedUnder = () => {
+        placeBetClicked(under, 'under')
+    }
+
+    const placedOver = () => {
+        placeBetClicked(over, 'over')
+    }
+
     return (
         <OddsContainer>
             <OddsElement style={{ gridArea: 'under' }}>
@@ -37,12 +87,22 @@ const Odds = ({ under, over }: { under: number; over: number }) => {
                 <SmallWhiteText>OVER</SmallWhiteText>
                 <LargeWhiteText>{over}</LargeWhiteText>
             </OddsElement>
-            <BlueTextButton style={{ gridArea: 'bunder' }}>
-                Place Bet
-            </BlueTextButton>
-            <BlueTextButton style={{ gridArea: 'bover' }}>
-                Place Bet
-            </BlueTextButton>
+            {!betPlaced ? (
+                <>
+                    <BlueTextButton onClick={placedUnder}>
+                        Place Bet
+                    </BlueTextButton>
+                    <BlueTextButton onClick={placedOver}>
+                        Place Bet
+                    </BlueTextButton>
+                </>
+            ) : (
+                <OddsLoadingContainer>
+                    betSending ? (
+                    <Loader size={10} margin={5} color={Colors.BrightBlue} />) :
+                    (<LargeWhiteText>Bet Placed!</LargeWhiteText>)
+                </OddsLoadingContainer>
+            )}
         </OddsContainer>
     )
 }
@@ -103,7 +163,13 @@ const PanelItem = ({
             <BlueTextButton onClick={showOddsClicked}>
                 {isShowingOdds ? 'Hide Odds' : 'Show Odds'}
             </BlueTextButton>
-            {isShowingOdds && <Odds under={oddsUnder} over={oddsOver} />}
+            {isShowingOdds && (
+                <Odds
+                    under={oddsUnder}
+                    over={oddsOver}
+                    weatherData={weatherData}
+                />
+            )}
         </OddsItem>
     )
 }
@@ -142,12 +208,16 @@ const calculateOdds = (val: number, type: ItemType) => {
 
 export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
+    const { user } = useAuth0()
 
     // WEATHER DATA
     const defaultWeatherData: WeatherData = {
         val: -999,
         oddsUnder: -999,
         oddsOver: -999,
+        city: city,
+        email: user ? user.email : 'nouser',
+        weatherFeature: '',
     }
 
     const [minTempData, setMinTempData] = useState(defaultWeatherData)
@@ -177,6 +247,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 val: forecast.min_temp,
                 oddsUnder: minTempOdds.oddsUnder,
                 oddsOver: minTempOdds.oddsOver,
+                city: city,
+                email: user ? user.email : 'nouser',
+                weatherFeature: 'minTemp',
             })
 
             const maxTempOdds = calculateOdds(
@@ -187,6 +260,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 val: forecast.max_temp,
                 oddsUnder: maxTempOdds.oddsUnder,
                 oddsOver: maxTempOdds.oddsOver,
+                city: city,
+                email: user ? user.email : 'nouser',
+                weatherFeature: 'maxTemp',
             })
 
             const windOdds = calculateOdds(forecast.windspeed, ItemType.WIND)
@@ -194,6 +270,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 val: forecast.windspeed,
                 oddsUnder: windOdds.oddsUnder,
                 oddsOver: windOdds.oddsOver,
+                city: city,
+                email: user ? user.email : 'nouser',
+                weatherFeature: 'maxWind',
             })
 
             const humidityOdds = calculateOdds(
@@ -204,6 +283,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 val: forecast.humidity,
                 oddsUnder: humidityOdds.oddsUnder,
                 oddsOver: humidityOdds.oddsOver,
+                city: city,
+                email: user ? user.email : 'nouser',
+                weatherFeature: 'humidity',
             })
 
             const precipOdds = calculateOdds(
@@ -215,24 +297,36 @@ export const OddsPanel = ({ city }: { city: string }) => {
                     val: forecast.rain + forecast.snow,
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
+                    city: city,
+                    email: user ? user.email : 'nouser',
+                    weatherFeature: 'totalPrecip',
                 })
             } else if (forecast.rain !== 0) {
                 setPrecipData({
                     val: forecast.rain,
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
+                    city: city,
+                    email: user ? user.email : 'nouser',
+                    weatherFeature: 'totalPrecip',
                 })
             } else if (forecast.snow !== 0) {
                 setPrecipData({
                     val: forecast.snow,
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
+                    city: city,
+                    email: user ? user.email : 'nouser',
+                    weatherFeature: 'totalPrecip',
                 })
             } else {
                 setPrecipData({
                     val: 0,
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
+                    city: city,
+                    email: user ? user.email : 'nouser',
+                    weatherFeature: 'totalPrecip',
                 })
             }
 
@@ -263,4 +357,7 @@ interface WeatherData {
     val: number
     oddsUnder: number
     oddsOver: number
+    weatherFeature: string
+    city: string
+    email: string
 }
