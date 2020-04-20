@@ -220,7 +220,6 @@ const calculateOdds = (val: number, type: ItemType) => {
 
 export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
-    const { user } = useAuth0()
 
     // WEATHER DATA
     const defaultWeatherData: WeatherData = {
@@ -228,7 +227,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
         oddsUnder: -999,
         oddsOver: -999,
         city: city,
-        email: user ? user.email : 'nouser',
         weatherFeature: '',
     }
 
@@ -260,7 +258,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 oddsUnder: minTempOdds.oddsUnder,
                 oddsOver: minTempOdds.oddsOver,
                 city: city,
-                email: user ? user.email : 'nouser',
                 weatherFeature: 'minTemp',
             })
 
@@ -273,7 +270,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 oddsUnder: maxTempOdds.oddsUnder,
                 oddsOver: maxTempOdds.oddsOver,
                 city: city,
-                email: user ? user.email : 'nouser',
                 weatherFeature: 'maxTemp',
             })
 
@@ -283,7 +279,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 oddsUnder: windOdds.oddsUnder,
                 oddsOver: windOdds.oddsOver,
                 city: city,
-                email: user ? user.email : 'nouser',
                 weatherFeature: 'maxWind',
             })
 
@@ -296,7 +291,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                 oddsUnder: humidityOdds.oddsUnder,
                 oddsOver: humidityOdds.oddsOver,
                 city: city,
-                email: user ? user.email : 'nouser',
                 weatherFeature: 'humidity',
             })
 
@@ -310,7 +304,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
                     city: city,
-                    email: user ? user.email : 'nouser',
                     weatherFeature: 'totalPrecip',
                 })
             } else if (forecast.rain !== 0) {
@@ -319,7 +312,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
                     city: city,
-                    email: user ? user.email : 'nouser',
                     weatherFeature: 'totalPrecip',
                 })
             } else if (forecast.snow !== 0) {
@@ -328,7 +320,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
                     city: city,
-                    email: user ? user.email : 'nouser',
                     weatherFeature: 'totalPrecip',
                 })
             } else {
@@ -337,7 +328,6 @@ export const OddsPanel = ({ city }: { city: string }) => {
                     oddsUnder: precipOdds.oddsUnder,
                     oddsOver: precipOdds.oddsOver,
                     city: city,
-                    email: user ? user.email : 'nouser',
                     weatherFeature: 'totalPrecip',
                 })
             }
@@ -346,7 +336,7 @@ export const OddsPanel = ({ city }: { city: string }) => {
         }
 
         getWeatherData()
-    }, [city, user])
+    }, [city])
 
     return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
@@ -371,5 +361,4 @@ interface WeatherData {
     oddsOver: number
     weatherFeature: string
     city: string
-    email: string
 }
