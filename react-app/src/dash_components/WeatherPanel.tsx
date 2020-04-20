@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 
-import { BarChart, Bar, Cell, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { MinMaxElement, GraphContainer, WeatherItem, MinMaxContainer, TooltipContainer, TooltipText } from './WeatherPanelStyles';
 import { SmallBlueTextButton, DarkLabelButtonContainer, VerySmallWhiteText, SmallWhiteText, MediumWhiteText } from './PanelStyles';
 
@@ -48,7 +48,6 @@ enum ItemType {
 
 function CustomTooltip({payload, label, active}: any) { // See same NOTE above - https://recharts.org/en-US/guide/customize
     if(active) {
-        console.log(payload)
         return (
             <TooltipContainer>
                 <TooltipText>{payload[0].value}</TooltipText>
@@ -60,8 +59,6 @@ function CustomTooltip({payload, label, active}: any) { // See same NOTE above -
 }
 
 const ForecastGraph = ({data, dataKey}: {data: Array<DataItem>, dataKey: string}) => {
-    const date = new Date()
-    const [currentHour] = useState(date.getHours())    
 
     return (
         <GraphContainer>
@@ -114,7 +111,7 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
             break
 
         case ItemType.WIND:
-            labelString = "Forecast Wind Speed (mph)"
+            labelString = "Forecast Wind Speed (m/s)"
             dataKey = 'wind'
             break
         
@@ -142,8 +139,8 @@ export const WeatherPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState<DataItem[]>([])
 
-    const [minTemp, setMinTemp] = useState(Number.POSITIVE_INFINITY)
-    const [maxTemp, setMaxTemp] = useState(Number.NEGATIVE_INFINITY)
+    const [minTemp, setMinTemp] = useState(0)
+    const [maxTemp, setMaxTemp] = useState(0)
     const [minWind, setMinWind] = useState(0)
     const [maxWind, setMaxWind] = useState(0)
     const [minPrecip, setMinPrecip] = useState(0)
@@ -161,21 +158,28 @@ export const WeatherPanel = ({ city }: { city: string }) => {
                 `http://localhost:5000/hourly/${city.toLowerCase()}`
             )
             const res = await response.json()
-            console.log(res)
             
             var objArray: DataItem[] = []
 
             res.slice(0, 23).map((i: HourlyData, index: number) => {
-                console.log(i.time)
                 var date = new Date(i.time * 1000)
                 var hour = date.getHours().toString()
                 
                 var myObj = { name: hour, precip: i.rain + i.snow, temp: i.temp, humidity: i.humidity, wind: i.windspeed }
 
                 objArray.push(myObj)
+
+                return i;
             }) 
 
-            console.log(objArray)
+            var lowTemp = Number.POSITIVE_INFINITY
+            var highTemp = Number.NEGATIVE_INFINITY
+            var lowHumid = Number.POSITIVE_INFINITY
+            var highHumid = Number.NEGATIVE_INFINITY
+            var lowPrecip = Number.POSITIVE_INFINITY
+            var highPrecip = Number.NEGATIVE_INFINITY
+            var lowWind = Number.POSITIVE_INFINITY
+            var highWind = Number.NEGATIVE_INFINITY
 
             objArray.forEach(obj => {
                 var temp = obj.temp
@@ -183,20 +187,49 @@ export const WeatherPanel = ({ city }: { city: string }) => {
                 var precip = obj.precip
                 var wind = obj.wind
 
-                console.log(obj)
-                if(temp < minTemp) {
-                    console.log('min temp', temp)
-                    setMinTemp(temp);
+                if(temp < lowTemp) {
+                    lowTemp = temp
                 }
 
-                if(temp > maxTemp) {
-                    console.log('max temp', temp)
-                    setMaxTemp(temp);
+                if(temp > highTemp) {
+                    highTemp = temp
+                }
+
+                if(humid < lowHumid) {
+                    lowHumid = humid
+                }
+
+                if(humid > highHumid) {
+                    highHumid = humid
+                }
+
+                if(wind < lowWind) {
+                    lowWind = wind
+                }
+
+                if(wind > highWind) {
+                    highWind = wind
+                }
+
+                if(precip < lowPrecip) {
+                    lowPrecip = precip
+                }
+
+                if(precip > highPrecip) {
+                    highPrecip = precip
                 }
             })
 
             setIsLoading(false)
             setData(objArray)
+            setMinTemp(lowTemp)
+            setMaxTemp(highTemp)
+            setMinHumidity(lowHumid)
+            setMaxHumidity(highHumid)
+            setMinWind(lowWind)
+            setMaxWind(highWind)
+            setMinPrecip(lowPrecip)
+            setMaxPrecip(highPrecip)
         }
 
         getHourlyData()
@@ -205,9 +238,9 @@ export const WeatherPanel = ({ city }: { city: string }) => {
     return !isLoading ? (
         <DashPanel dashLocation={'weather'} dashName={'Weather Report'}>
             <PanelItem data={data} type={ItemType.TEMP} min={minTemp} max={maxTemp}/>
-            <PanelItem data={data} type={ItemType.PRECIP} min={1} max={5}/>
-            <PanelItem data={data} type={ItemType.WIND} min={12} max={85}/>
-            <PanelItem data={data} type={ItemType.HUMIDITY} min={40} max={80}/>
+            <PanelItem data={data} type={ItemType.PRECIP} min={minPrecip} max={maxPrecip}/>
+            <PanelItem data={data} type={ItemType.WIND} min={minWind} max={maxWind}/>
+            <PanelItem data={data} type={ItemType.HUMIDITY} min={minHumidity} max={maxHumidity}/>
         </DashPanel>
     ) : <DashPanel dashLocation={'weather'} dashName={'Weather Report'}></DashPanel>
 
