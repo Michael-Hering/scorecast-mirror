@@ -160,9 +160,9 @@ export const OddsPanel = ({ city }: { city: string }) => {
         const getWeatherData = async () => {
             setIsLoading(true)
 
-            console.log(
-                `Getting weather data: http://localhost:5000/daily/${city.toLowerCase()}`
-            )
+            // console.log(
+            //     `Getting weather data: http://localhost:5000/daily/${city.toLowerCase()}`
+            // )
             const response = await fetch(
                 `http://localhost:5000/daily/${city.toLowerCase()}`
             )

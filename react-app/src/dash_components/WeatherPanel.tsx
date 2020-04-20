@@ -199,7 +199,7 @@ export const WeatherPanel = ({ city }: { city: string }) => {
         const getHourlyData = async () => {
             setIsLoading(true)
 
-            console.log('getting hourly data')
+            // console.log('getting hourly data')
             const response = await fetch(
                 `http://localhost:5000/hourly/${city.toLowerCase()}`
             )
