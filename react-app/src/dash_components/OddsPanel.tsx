@@ -67,10 +67,7 @@ const Odds = ({
             }),
         }
 
-        const response = await fetch(
-            `http://localhost:5000/api/bets`,
-            requestOptions
-        )
+        await fetch(`http://localhost:5000/api/bets`, requestOptions)
 
         setBetSending(false)
     }
