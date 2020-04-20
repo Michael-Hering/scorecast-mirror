@@ -7,6 +7,7 @@ import { DashPanel } from 'dash_components/DashPanel'
 import { OddsPanel } from 'dash_components/OddsPanel'
 import { WeatherPanel } from 'dash_components/WeatherPanel'
 import { CityPicker } from 'dash_components/CityPicker'
+import { TweetPanel } from 'dash_components/TweetPanel'
 
 export const Dashboard = () => {
     const [city, setCity] = useState('Denver')
@@ -20,16 +21,9 @@ export const Dashboard = () => {
                 }}
             />
             <TopBar />
-            <WeatherPanel />
+            <WeatherPanel city={city} />
             <OddsPanel city={city} />
-            <DashPanel
-                dashLocation={'twittertop'}
-                dashName={'Twitter Analysis'}
-            ></DashPanel>
-            <DashPanel
-                dashLocation={'twitterbottom'}
-                dashName={'Live Tweets'}
-            ></DashPanel>
+            <TweetPanel city={city} />
         </DashboardContainer>
     )
 }

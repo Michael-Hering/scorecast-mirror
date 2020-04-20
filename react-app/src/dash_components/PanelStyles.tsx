@@ -16,7 +16,7 @@ export const DarkLabel = styled.div`
 
 export const DarkLabelButtonContainer = styled.div`
     width: 100%;
-    height: 50px;
+    height: 60px;
 
     display: grid;
 
