@@ -1,10 +1,12 @@
 import React, { useState, ReactNode, useEffect, useRef } from 'react'
-import { DashPanel } from 'dash_components/DashPanel'
-import { v4 as uuid } from 'uuid'
 import { Colors } from 'common/colors/Colors'
-import Loader from 'react-spinners/PulseLoader'
+
+import { v4 as uuid } from 'uuid'
+import { DashPanel } from 'dash_components/DashPanel'
 import { LoaderContainer, TweetsContainer, TweetBox } from './TweetPanelStyles'
-import { Tweet } from 'react-twitter-widgets'
+import { TwitterTweetEmbed } from 'react-twitter-embed'
+
+import Loader from 'react-spinners/PulseLoader'
 
 export const TweetPanel = ({ city }: Props) => {
     const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +39,7 @@ export const TweetPanel = ({ city }: Props) => {
                 const element = JSON.parse(data[i])
                 tweetsArray.push(
                     <TweetBox key={uuid()} style={{ width: maxTweetWidth }}>
-                        <Tweet
+                        <TwitterTweetEmbed
                             tweetId={element.id_str}
                             key={uuid()}
                             options={{ theme: 'dark', width: maxTweetWidth }}
