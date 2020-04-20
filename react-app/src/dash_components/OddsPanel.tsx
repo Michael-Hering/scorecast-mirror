@@ -71,11 +71,7 @@ const Odds = ({
             `http://localhost:5000/api/bets`,
             requestOptions
         )
-        // const data: any[] = await response.json()
 
-        console.log(`Placing bet:`)
-        console.log(requestOptions.body)
-        // console.log(data)
         setBetSending(false)
     }
 
