@@ -108,9 +108,37 @@ const PanelItem = ({
     )
 }
 
-const calculateOdds = (val: number) => {
-    return { oddsUnder: -100, oddsOver: 100 }
+// ------------------------------------------------------------
+// CLASSIFIED: Proprietary Algorithm B10 Organization
+// calculateOdds v1.2.3a - DANIEL SCOTT
+const calculateOdds = (val: number, type: ItemType) => {
+    const negFlip = Math.random() < 0.5
+    let under, over
+
+    switch (type) {
+        case ItemType.MINTEMP:
+            under = Math.floor(Math.random() * 300 + 50)
+            over = -1 * Math.floor(Math.random() * 300 + 50)
+            break
+
+        case ItemType.MAXTEMP:
+            under = -1 * Math.floor(Math.random() * 300 + 50)
+            over = Math.floor(Math.random() * 300 + 50)
+            break
+
+        default:
+            under = negFlip
+                ? -1 * Math.floor(Math.random() * 300 + 50)
+                : -1 * Math.floor(Math.random() * 300 + 50)
+            over = negFlip
+                ? Math.floor(Math.random() * 300 + 50)
+                : Math.floor(Math.random() * 300 + 50)
+            break
+    }
+
+    return { oddsUnder: under, oddsOver: over }
 }
+// ------------------------------------------------------------
 
 export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
@@ -141,35 +169,47 @@ export const OddsPanel = ({ city }: { city: string }) => {
             const data = await response.json()
             const forecast = data.nextDayForecast
 
-            const minTempOdds = calculateOdds(forecast.min_temp)
+            const minTempOdds = calculateOdds(
+                forecast.min_temp,
+                ItemType.MINTEMP
+            )
             setMinTempData({
                 val: forecast.min_temp,
                 oddsUnder: minTempOdds.oddsUnder,
                 oddsOver: minTempOdds.oddsOver,
             })
 
-            const maxTempOdds = calculateOdds(forecast.max_temp)
+            const maxTempOdds = calculateOdds(
+                forecast.max_temp,
+                ItemType.MAXTEMP
+            )
             setMaxTempData({
                 val: forecast.max_temp,
                 oddsUnder: maxTempOdds.oddsUnder,
                 oddsOver: maxTempOdds.oddsOver,
             })
 
-            const windOdds = calculateOdds(forecast.windspeed)
+            const windOdds = calculateOdds(forecast.windspeed, ItemType.WIND)
             setWindData({
                 val: forecast.windspeed,
                 oddsUnder: windOdds.oddsUnder,
                 oddsOver: windOdds.oddsOver,
             })
 
-            const humidityOdds = calculateOdds(forecast.humidity)
+            const humidityOdds = calculateOdds(
+                forecast.humidity,
+                ItemType.HUMIDITY
+            )
             setHumidityData({
                 val: forecast.humidity,
                 oddsUnder: humidityOdds.oddsUnder,
                 oddsOver: humidityOdds.oddsOver,
             })
 
-            const precipOdds = calculateOdds(forecast.rain + forecast.snow)
+            const precipOdds = calculateOdds(
+                forecast.rain + forecast.snow,
+                ItemType.PRECIP
+            )
             if (forecast.rain !== 0 && forecast.snow !== 0) {
                 setPrecipData({
                     val: forecast.rain + forecast.snow,
