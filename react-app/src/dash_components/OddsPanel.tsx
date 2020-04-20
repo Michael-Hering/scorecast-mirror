@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
+import Loader from 'react-spinners/PulseLoader'
 
 import {
     OddsItem,
@@ -14,6 +15,7 @@ import {
     SmallWhiteText,
     LargeWhiteText,
     SingleNumberBox,
+    LoaderContainer,
 } from 'dash_components/PanelStyles'
 
 enum ItemType {
@@ -45,8 +47,15 @@ const Odds = ({ under, over }: { under: number; over: number }) => {
     )
 }
 
-const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
+const PanelItem = ({
+    type,
+    weatherData,
+}: {
+    type: ItemType
+    weatherData: WeatherData
+}) => {
     const [isShowingOdds, setIsShowingOdds] = useState(false)
+    const { val, oddsUnder, oddsOver } = weatherData
 
     const showOddsClicked = () => {
         setIsShowingOdds(!isShowingOdds)
@@ -68,7 +77,7 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
 
         case ItemType.PRECIP:
             backgroundColor = Colors.RainBlue
-            labelString = "Tomorrow's Total Precipitation (in.)"
+            labelString = "Tomorrow's Total Precip. (in.)"
             break
 
         case ItemType.WIND:
@@ -88,25 +97,170 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
     return (
         <OddsItem>
             <SingleNumberBox style={{ backgroundColor: backgroundColor }}>
-                {temp}
+                {val}
             </SingleNumberBox>
             <DarkLabel>{labelString}</DarkLabel>
             <BlueTextButton onClick={showOddsClicked}>
                 {isShowingOdds ? 'Hide Odds' : 'Show Odds'}
             </BlueTextButton>
-            {isShowingOdds && <Odds under={-100} over={100} />}
+            {isShowingOdds && <Odds under={oddsUnder} over={oddsOver} />}
         </OddsItem>
     )
 }
 
-export const OddsPanel = () => {
-    return (
+// ------------------------------------------------------------
+// CLASSIFIED: Proprietary Algorithm B10 Organization
+// calculateOdds v1.2.4a - DANIEL SCOTT
+const calculateOdds = (val: number, type: ItemType) => {
+    const negFlip = Math.random() < 0.5
+    let under, over
+
+    switch (type) {
+        case ItemType.MINTEMP:
+            under = Math.floor(Math.random() * 300 + 50)
+            over = -1 * Math.floor(Math.random() * 300 + 50)
+            break
+
+        case ItemType.MAXTEMP:
+            under = -1 * Math.floor(Math.random() * 300 + 50)
+            over = Math.floor(Math.random() * 300 + 50)
+            break
+
+        default:
+            under = negFlip
+                ? -1 * Math.floor(Math.random() * 300 + 50)
+                : Math.floor(Math.random() * 300 + 50)
+            over = negFlip
+                ? Math.floor(Math.random() * 300 + 50)
+                : -1 * Math.floor(Math.random() * 300 + 50)
+            break
+    }
+
+    return { oddsUnder: under, oddsOver: over }
+}
+// ------------------------------------------------------------
+
+export const OddsPanel = ({ city }: { city: string }) => {
+    const [isLoading, setIsLoading] = useState(true)
+
+    // WEATHER DATA
+    const defaultWeatherData: WeatherData = {
+        val: -999,
+        oddsUnder: -999,
+        oddsOver: -999,
+    }
+
+    const [minTempData, setMinTempData] = useState(defaultWeatherData)
+    const [maxTempData, setMaxTempData] = useState(defaultWeatherData)
+    const [precipData, setPrecipData] = useState(defaultWeatherData)
+    const [windData, setWindData] = useState(defaultWeatherData)
+    const [humidityData, setHumidityData] = useState(defaultWeatherData)
+
+    useEffect(() => {
+        const getWeatherData = async () => {
+            setIsLoading(true)
+
+            // console.log(
+            //     `Getting weather data: http://localhost:5000/daily/${city.toLowerCase()}`
+            // )
+            const response = await fetch(
+                `http://localhost:5000/daily/${city.toLowerCase()}`
+            )
+            const data = await response.json()
+            const forecast = data.nextDayForecast
+
+            const minTempOdds = calculateOdds(
+                forecast.min_temp,
+                ItemType.MINTEMP
+            )
+            setMinTempData({
+                val: forecast.min_temp,
+                oddsUnder: minTempOdds.oddsUnder,
+                oddsOver: minTempOdds.oddsOver,
+            })
+
+            const maxTempOdds = calculateOdds(
+                forecast.max_temp,
+                ItemType.MAXTEMP
+            )
+            setMaxTempData({
+                val: forecast.max_temp,
+                oddsUnder: maxTempOdds.oddsUnder,
+                oddsOver: maxTempOdds.oddsOver,
+            })
+
+            const windOdds = calculateOdds(forecast.windspeed, ItemType.WIND)
+            setWindData({
+                val: forecast.windspeed,
+                oddsUnder: windOdds.oddsUnder,
+                oddsOver: windOdds.oddsOver,
+            })
+
+            const humidityOdds = calculateOdds(
+                forecast.humidity,
+                ItemType.HUMIDITY
+            )
+            setHumidityData({
+                val: forecast.humidity,
+                oddsUnder: humidityOdds.oddsUnder,
+                oddsOver: humidityOdds.oddsOver,
+            })
+
+            const precipOdds = calculateOdds(
+                forecast.rain + forecast.snow,
+                ItemType.PRECIP
+            )
+            if (forecast.rain !== 0 && forecast.snow !== 0) {
+                setPrecipData({
+                    val: forecast.rain + forecast.snow,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
+            } else if (forecast.rain !== 0) {
+                setPrecipData({
+                    val: forecast.rain,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
+            } else if (forecast.snow !== 0) {
+                setPrecipData({
+                    val: forecast.snow,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
+            } else {
+                setPrecipData({
+                    val: 0,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
+            }
+
+            setIsLoading(false)
+        }
+
+        getWeatherData()
+    }, [city])
+
+    return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <PanelItem val={70} type={ItemType.MINTEMP} />
-            <PanelItem val={80} type={ItemType.MAXTEMP} />
-            <PanelItem val={4.1} type={ItemType.PRECIP} />
-            <PanelItem val={34} type={ItemType.WIND} />
-            <PanelItem val={77} type={ItemType.HUMIDITY} />
+            <PanelItem weatherData={minTempData} type={ItemType.MINTEMP} />
+            <PanelItem weatherData={maxTempData} type={ItemType.MAXTEMP} />
+            <PanelItem weatherData={precipData} type={ItemType.PRECIP} />
+            <PanelItem weatherData={windData} type={ItemType.WIND} />
+            <PanelItem weatherData={humidityData} type={ItemType.HUMIDITY} />
+        </DashPanel>
+    ) : (
+        <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
+            <LoaderContainer>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
         </DashPanel>
     )
+}
+
+interface WeatherData {
+    val: number
+    oddsUnder: number
+    oddsOver: number
 }

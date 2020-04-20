@@ -22,7 +22,7 @@ export const DashboardContainer = styled.div`
 
     background: linear-gradient(119.36deg, #00577c 0%, #003248 100%);
 
-    overflow-y: hidden;
+    overflow: hidden;
 
     cursor: default;
 `

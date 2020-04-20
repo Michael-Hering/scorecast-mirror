@@ -1,33 +1,48 @@
 import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
+import Loader from 'react-spinners/PulseLoader'
 
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { MinMaxElement, GraphContainer, WeatherItem, MinMaxContainer, TooltipContainer, TooltipText } from './WeatherPanelStyles';
-import { SmallBlueTextButton, DarkLabelButtonContainer, VerySmallWhiteText, SmallWhiteText, MediumWhiteText } from './PanelStyles';
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import {
+    MinMaxElement,
+    GraphContainer,
+    WeatherItem,
+    MinMaxContainer,
+    TooltipContainer,
+    TooltipText,
+} from './WeatherPanelStyles'
+import {
+    SmallBlueTextButton,
+    DarkLabelButtonContainer,
+    VerySmallWhiteText,
+    SmallWhiteText,
+    MediumWhiteText,
+    LoaderContainer,
+} from './PanelStyles'
 
 interface DataItem {
-    name: string,
-    temp: number,
-    precip: number,
-    humidity: number,
+    name: string
+    temp: number
+    precip: number
+    humidity: number
     wind: number
 }
 
 interface WeatherData {
-    id: number,
-    main: string,
-    description: string,
+    id: number
+    main: string
+    description: string
     icon: string
 }
 
 interface HourlyData {
-    time: number,
-    windspeed: number,
-    weather: WeatherData[],
-    humidity: number,
-    rain: number,
-    snow: number,
+    time: number
+    windspeed: number
+    weather: WeatherData[]
+    humidity: number
+    rain: number
+    snow: number
     temp: number
 }
 
@@ -46,8 +61,9 @@ enum ItemType {
 //     }
 // }
 
-function CustomTooltip({payload, label, active}: any) { // See same NOTE above - https://recharts.org/en-US/guide/customize
-    if(active) {
+function CustomTooltip({ payload, label, active }: any) {
+    // See same NOTE above - https://recharts.org/en-US/guide/customize
+    if (active) {
         return (
             <TooltipContainer>
                 <TooltipText>{payload[0].value}</TooltipText>
@@ -58,30 +74,44 @@ function CustomTooltip({payload, label, active}: any) { // See same NOTE above -
     return null
 }
 
-const ForecastGraph = ({data, dataKey}: {data: Array<DataItem>, dataKey: string}) => {
-
+const ForecastGraph = ({
+    data,
+    dataKey,
+}: {
+    data: Array<DataItem>
+    dataKey: string
+}) => {
     return (
         <GraphContainer>
             <ResponsiveContainer width="99%" height="100%">
                 <BarChart data={data}>
-                    <XAxis dataKey="name" stroke={Colors.White} axisLine={false} tickMargin={6} minTickGap={-1}/>
+                    <XAxis
+                        dataKey="name"
+                        stroke={Colors.White}
+                        axisLine={false}
+                        tickMargin={6}
+                        minTickGap={-1}
+                    />
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey={dataKey} fill={Colors.White} barSize={10}>
-                    </Bar>
+                    <Bar
+                        dataKey={dataKey}
+                        fill={Colors.White}
+                        barSize={10}
+                    ></Bar>
                 </BarChart>
             </ResponsiveContainer>
         </GraphContainer>
     )
 }
 
-const MinMax = ({min, max}: {min: number, max: number}) => {
+const MinMax = ({ min, max }: { min: number; max: number }) => {
     return (
         <MinMaxContainer>
-            <MinMaxElement style={{gridArea: 'min'}}>
+            <MinMaxElement style={{ gridArea: 'min' }}>
                 <VerySmallWhiteText>MIN</VerySmallWhiteText>
                 <MediumWhiteText>{min}</MediumWhiteText>
             </MinMaxElement>
-            <MinMaxElement style={{gridArea: 'max'}}>
+            <MinMaxElement style={{ gridArea: 'max' }}>
                 <VerySmallWhiteText>MAX</VerySmallWhiteText>
                 <MediumWhiteText>{max}</MediumWhiteText>
             </MinMaxElement>
@@ -89,34 +119,44 @@ const MinMax = ({min, max}: {min: number, max: number}) => {
     )
 }
 
-const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Array<DataItem>, type: ItemType}) => {
+const PanelItem = ({
+    min,
+    max,
+    data,
+    type,
+}: {
+    min: number
+    max: number
+    data: Array<DataItem>
+    type: ItemType
+}) => {
     const [isShowingHistogram, setIsShowingHistogram] = useState(false)
 
     const showHistogramClicked = () => {
-        setIsShowingHistogram(!isShowingHistogram);
+        setIsShowingHistogram(!isShowingHistogram)
     }
-    
+
     let labelString: string = ''
-    let dataKey: string =''
+    let dataKey: string = ''
 
     switch (type) {
         case ItemType.TEMP:
-            labelString = "Forecast Temp. (°F)"
+            labelString = 'Forecast Temp. (°F)'
             dataKey = 'temp'
             break
 
         case ItemType.HUMIDITY:
-            labelString = "Forecast Humidity (%)"
+            labelString = 'Forecast Humidity (%)'
             dataKey = 'humidity'
             break
 
         case ItemType.WIND:
-            labelString = "Forecast Wind Speed (m/s)"
+            labelString = 'Forecast Wind Speed (m/s)'
             dataKey = 'wind'
             break
-        
+
         case ItemType.PRECIP:
-            labelString = "Forecast Precipitation (in.)"
+            labelString = 'Forecast Precipitation (in.)'
             dataKey = 'precip'
             break
     }
@@ -124,10 +164,17 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
     return (
         <WeatherItem>
             {!isShowingHistogram && <MinMax min={min} max={max}></MinMax>}
-            {isShowingHistogram && <ForecastGraph data={data} dataKey={dataKey}/> }
+            {isShowingHistogram && (
+                <ForecastGraph data={data} dataKey={dataKey} />
+            )}
             <DarkLabelButtonContainer>
-                <SmallWhiteText style={{gridArea: "label"}}>{labelString}</SmallWhiteText>
-                <SmallBlueTextButton style={{gridArea: "button"}} onClick={showHistogramClicked}>
+                <SmallWhiteText style={{ gridArea: 'label' }}>
+                    {labelString}
+                </SmallWhiteText>
+                <SmallBlueTextButton
+                    style={{ gridArea: 'button' }}
+                    onClick={showHistogramClicked}
+                >
                     {isShowingHistogram ? 'Hide Histogram' : 'Show Histogram'}
                 </SmallBlueTextButton>
             </DarkLabelButtonContainer>
@@ -148,29 +195,34 @@ export const WeatherPanel = ({ city }: { city: string }) => {
     const [minHumidity, setMinHumidity] = useState(0)
     const [maxHumidity, setMaxHumidity] = useState(0)
 
-
     useEffect(() => {
         const getHourlyData = async () => {
             setIsLoading(true)
 
-            console.log('getting hourly data')
+            // console.log('getting hourly data')
             const response = await fetch(
                 `http://localhost:5000/hourly/${city.toLowerCase()}`
             )
             const res = await response.json()
-            
+
             var objArray: DataItem[] = []
 
             res.slice(0, 23).map((i: HourlyData, index: number) => {
                 var date = new Date(i.time * 1000)
                 var hour = date.getHours().toString()
-                
-                var myObj = { name: hour, precip: i.rain + i.snow, temp: i.temp, humidity: i.humidity, wind: i.windspeed }
+
+                var myObj = {
+                    name: hour,
+                    precip: i.rain + i.snow,
+                    temp: i.temp,
+                    humidity: i.humidity,
+                    wind: i.windspeed,
+                }
 
                 objArray.push(myObj)
 
-                return i;
-            }) 
+                return i
+            })
 
             var lowTemp = Number.POSITIVE_INFINITY
             var highTemp = Number.NEGATIVE_INFINITY
@@ -181,41 +233,41 @@ export const WeatherPanel = ({ city }: { city: string }) => {
             var lowWind = Number.POSITIVE_INFINITY
             var highWind = Number.NEGATIVE_INFINITY
 
-            objArray.forEach(obj => {
+            objArray.forEach((obj) => {
                 var temp = obj.temp
                 var humid = obj.humidity
                 var precip = obj.precip
                 var wind = obj.wind
 
-                if(temp < lowTemp) {
+                if (temp < lowTemp) {
                     lowTemp = temp
                 }
 
-                if(temp > highTemp) {
+                if (temp > highTemp) {
                     highTemp = temp
                 }
 
-                if(humid < lowHumid) {
+                if (humid < lowHumid) {
                     lowHumid = humid
                 }
 
-                if(humid > highHumid) {
+                if (humid > highHumid) {
                     highHumid = humid
                 }
 
-                if(wind < lowWind) {
+                if (wind < lowWind) {
                     lowWind = wind
                 }
 
-                if(wind > highWind) {
+                if (wind > highWind) {
                     highWind = wind
                 }
 
-                if(precip < lowPrecip) {
+                if (precip < lowPrecip) {
                     lowPrecip = precip
                 }
 
-                if(precip > highPrecip) {
+                if (precip > highPrecip) {
                     highPrecip = precip
                 }
             })
@@ -237,11 +289,36 @@ export const WeatherPanel = ({ city }: { city: string }) => {
 
     return !isLoading ? (
         <DashPanel dashLocation={'weather'} dashName={'Weather Report'}>
-            <PanelItem data={data} type={ItemType.TEMP} min={minTemp} max={maxTemp}/>
-            <PanelItem data={data} type={ItemType.PRECIP} min={minPrecip} max={maxPrecip}/>
-            <PanelItem data={data} type={ItemType.WIND} min={minWind} max={maxWind}/>
-            <PanelItem data={data} type={ItemType.HUMIDITY} min={minHumidity} max={maxHumidity}/>
+            <PanelItem
+                data={data}
+                type={ItemType.TEMP}
+                min={minTemp}
+                max={maxTemp}
+            />
+            <PanelItem
+                data={data}
+                type={ItemType.PRECIP}
+                min={minPrecip}
+                max={maxPrecip}
+            />
+            <PanelItem
+                data={data}
+                type={ItemType.WIND}
+                min={minWind}
+                max={maxWind}
+            />
+            <PanelItem
+                data={data}
+                type={ItemType.HUMIDITY}
+                min={minHumidity}
+                max={maxHumidity}
+            />
         </DashPanel>
-    ) : <DashPanel dashLocation={'weather'} dashName={'Weather Report'}></DashPanel>
-
+    ) : (
+        <DashPanel dashLocation={'weather'} dashName={'Weather Report'}>
+            <LoaderContainer>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
+        </DashPanel>
+    )
 }

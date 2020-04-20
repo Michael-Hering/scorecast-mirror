@@ -3,10 +3,11 @@ import { Colors } from 'common/colors/Colors'
 
 import { v4 as uuid } from 'uuid'
 import { DashPanel } from 'dash_components/DashPanel'
-import { LoaderContainer, TweetsContainer, TweetBox } from './TweetPanelStyles'
+import { TweetsContainer, TweetBox } from './TweetPanelStyles'
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 
 import Loader from 'react-spinners/PulseLoader'
+import { LoaderContainer } from './PanelStyles'
 
 export const TweetPanel = ({ city }: Props) => {
     const [isLoading, setIsLoading] = useState(true)

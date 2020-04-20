@@ -25,8 +25,7 @@ export const DarkLabelButtonContainer = styled.div`
     text-align: center;
 
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-areas:
-        'empty label button';
+    grid-template-areas: 'empty label button';
 `
 
 export const SingleNumberBox = styled.div`
@@ -67,6 +66,14 @@ export const BlueTextButton = styled.div`
     background-color: ${Colors.Obsidian};
     color: ${Colors.BrightBlue};
     cursor: pointer;
+`
+
+export const LoaderContainer = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    place-items: center center;
 `
 
 export const VerySmallWhiteText = styled.div`
