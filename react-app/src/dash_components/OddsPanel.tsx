@@ -110,7 +110,7 @@ const PanelItem = ({
 
 // ------------------------------------------------------------
 // CLASSIFIED: Proprietary Algorithm B10 Organization
-// calculateOdds v1.2.3a - DANIEL SCOTT
+// calculateOdds v1.2.4a - DANIEL SCOTT
 const calculateOdds = (val: number, type: ItemType) => {
     const negFlip = Math.random() < 0.5
     let under, over
@@ -129,10 +129,10 @@ const calculateOdds = (val: number, type: ItemType) => {
         default:
             under = negFlip
                 ? -1 * Math.floor(Math.random() * 300 + 50)
-                : -1 * Math.floor(Math.random() * 300 + 50)
+                : Math.floor(Math.random() * 300 + 50)
             over = negFlip
                 ? Math.floor(Math.random() * 300 + 50)
-                : Math.floor(Math.random() * 300 + 50)
+                : -1 * Math.floor(Math.random() * 300 + 50)
             break
     }
 
