@@ -77,7 +77,7 @@ const PanelItem = ({
 
         case ItemType.PRECIP:
             backgroundColor = Colors.RainBlue
-            labelString = "Tomorrow's Total Precipitation (in.)"
+            labelString = "Tomorrow's Total Precip. (in.)"
             break
 
         case ItemType.WIND:
