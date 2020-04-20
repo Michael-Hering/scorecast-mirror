@@ -57,7 +57,7 @@ const Odds = ({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: user.email,
-                city: weatherData.city,
+                city: weatherData.city.toLowerCase(),
                 date: new Date().getTime(),
                 type: type,
                 odds: odds,
