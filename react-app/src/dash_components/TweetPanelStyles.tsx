@@ -8,10 +8,3 @@ export const TweetsContainer = styled.div`
     width: 100%;
     text-align: center;
 `
-
-export const LoaderContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center center;
-`

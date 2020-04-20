@@ -7,7 +7,6 @@ import {
     OddsItem,
     OddsContainer,
     OddsElement,
-    LoaderContainer,
 } from 'dash_components/OddsPanelStyles'
 
 import {
@@ -16,6 +15,7 @@ import {
     SmallWhiteText,
     LargeWhiteText,
     SingleNumberBox,
+    LoaderContainer,
 } from 'dash_components/PanelStyles'
 
 enum ItemType {

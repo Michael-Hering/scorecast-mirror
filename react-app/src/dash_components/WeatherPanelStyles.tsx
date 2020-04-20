@@ -8,8 +8,7 @@ export const MinMaxContainer = styled.div`
     display: grid;
     place-items: center center;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        'min max';
+    grid-template-areas: 'min max';
 `
 
 export const WeatherItem = styled.div`
@@ -59,4 +58,12 @@ export const TooltipContainer = styled.div`
 
 export const TooltipText = styled.div`
     font-size: 12px;
+`
+
+export const LoaderContainer = styled.div`
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    place-items: center center;
 `

@@ -41,11 +41,3 @@ export const OddsElement = styled.div`
     border: 1px solid ${Colors.Black};
     box-sizing: border-box;
 `
-
-export const LoaderContainer = styled.div`
-    width: 100%;
-    height: 100%;
-
-    display: grid;
-    place-items: center center;
-`
