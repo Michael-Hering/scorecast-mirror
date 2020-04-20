@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import { Dropdown, ButtonGroup } from 'react-bootstrap'
 import { Colors } from 'common/colors/Colors'
+
+import { v4 as uuid } from 'uuid'
 
 export const CityPicker = ({ city, setCity }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -35,10 +37,14 @@ export const CityPicker = ({ city, setCity }: Props) => {
         'Honolulu',
     ]
 
-    const dropdownItems = cities.map((cityName) => {
-        if (city === cityName) {
-            return (
+    const dropdownArray: ReactNode[] = []
+
+    for (let i = 0; i < cities.length; i++) {
+        const cityName = cities[i]
+        dropdownArray.push(
+            cityName === city ? (
                 <Dropdown.Item
+                    key={uuid()}
                     className="dropdown-item"
                     style={{ color: Colors.White }}
                     onClick={() => {
@@ -48,10 +54,9 @@ export const CityPicker = ({ city, setCity }: Props) => {
                 >
                     {cityName}
                 </Dropdown.Item>
-            )
-        } else {
-            return (
+            ) : (
                 <Dropdown.Item
+                    key={uuid()}
                     className="dropdown-item"
                     style={{ color: Colors.White }}
                     onClick={() => {
@@ -61,8 +66,8 @@ export const CityPicker = ({ city, setCity }: Props) => {
                     {cityName}
                 </Dropdown.Item>
             )
-        }
-    })
+        )
+    }
 
     return (
         <div
@@ -86,9 +91,10 @@ export const CityPicker = ({ city, setCity }: Props) => {
                     style={{
                         height: isOpen ? '600px' : '100%',
                         overflowY: 'scroll',
+                        margin: '0',
                     }}
                 >
-                    {dropdownItems}
+                    {dropdownArray}
                 </Dropdown.Menu>
             </Dropdown>{' '}
         </div>
