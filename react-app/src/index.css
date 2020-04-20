@@ -11,6 +11,28 @@ body,
 
     height: 100%;
     width: 100%;
+
+    overflow: hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #2f2f2f;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #dedede;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #1f1f2c;
 }
 
 code {
