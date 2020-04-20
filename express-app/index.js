@@ -3,9 +3,12 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors')
+const bodyParser = require('body-parser');
+
 require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
+const bets = require('./routes/bets');
 const hourly = require('./routes/hourly');
 const daily = require('./routes/daily');
 
@@ -23,9 +26,11 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(express.json())
 
 app.use(cors())
+app.use(bodyParser.json());
 
 // Routing
 app.use('/api/users', users);
+app.use('/api/bets', bets);
 app.use('/hourly', hourly);
 app.use('/daily', daily);
 
