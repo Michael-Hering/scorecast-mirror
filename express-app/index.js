@@ -2,10 +2,9 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors')
-
 
 require('dotenv').config()
 // Route constants
@@ -32,6 +31,9 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+app.use(express.json())
+
+app.use(cors())
 app.use(bodyParser.json());
 
 

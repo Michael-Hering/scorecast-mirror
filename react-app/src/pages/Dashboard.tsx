@@ -17,7 +17,7 @@ export const Dashboard = () => {
         <DashboardContainer>
             <CityPicker city={city} setCity={(cityName: string) => {setCity(cityName);}}/>
             <TopBar />
-            <WeatherPanel />            
+            <WeatherPanel city={city}/>            
             <OddsPanel />
             <TweetPanel city={city}/>
         </DashboardContainer>
