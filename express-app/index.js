@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors')
 require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
@@ -18,6 +19,10 @@ const uri = `mongodb+srv://dbUser:${process.env.MONGO_PASS}@scorecast-cluster-iy
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+app.use(express.json())
+
+app.use(cors())
 
 // Routing
 app.use('/api/users', users);

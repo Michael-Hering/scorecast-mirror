@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 
@@ -6,40 +6,29 @@ import { BarChart, Bar, Cell, XAxis, Tooltip, ResponsiveContainer } from 'rechar
 import { MinMaxElement, GraphContainer, WeatherItem, MinMaxContainer, TooltipContainer, TooltipText } from './WeatherPanelStyles';
 import { SmallBlueTextButton, DarkLabelButtonContainer, VerySmallWhiteText, SmallWhiteText, MediumWhiteText } from './PanelStyles';
 
-const temp_data = [
-    {name: '00', value: 25}, 
-    {name: '01', value: 50}, 
-    {name: '02', value: 75}, 
-    {name: '03', value: 55},
-    {name: '04', value: 60},
-    {name: '05', value: 22},
-    {name: '06', value: 45},
-    {name: '07', value: 35},
-    {name: '08', value: 65},
-    {name: '09', value: 12},
-    {name: '10', value: 58},
-    {name: '11', value: 78},
-    {name: '12', value: 35},
-    {name: '13', value: 45},
-    {name: '14', value: 36},
-    {name: '15', value: 48},
-    {name: '16', value: 49},
-    {name: '17', value: 50},
-    {name: '18', value: 65},
-    {name: '19', value: 42},
-    {name: '20', value: 17},
-    {name: '21', value: 32},
-    {name: '22', value: 84},
-    {name: '23', value: 55},
-    {name: '24', value: 55},
-
-]
-
-const xticks = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
-
 interface DataItem {
-    name: String,
-    value: Number
+    name: string,
+    temp: number,
+    precip: number,
+    humidity: number,
+    wind: number
+}
+
+interface WeatherData {
+    id: number,
+    main: string,
+    description: string,
+    icon: string
+}
+
+interface HourlyData {
+    time: number,
+    windspeed: number,
+    weather: WeatherData[],
+    humidity: number,
+    rain: number,
+    snow: number,
+    temp: number
 }
 
 enum ItemType {
@@ -49,15 +38,17 @@ enum ItemType {
     HUMIDITY,
 }
 
-const renderCustomBarLabel = ({payload, x, y, width, height, index, value}: any) => { // NOTE: any the use of any is general frowned up but need for the functions passed into rechart library (all guides I saw had this)
-    const hour = new Date().getHours()
-    if (index === hour) {
-        return <text x={x + width / 2} y={y} fill={Colors.White} textAnchor="middle" dy={-6}>{value}</text>;
-    }
-}
+// const renderCustomBarLabel = ({payload, x, y, width, height, index, value}: any) => { // NOTE: any the use of any is general frowned up but need for the functions passed into rechart library (all guides I saw had this)
+//     const hour = new Date().getHours()
+//     console.log(payload)
+//     if (index === hour) {
+//         return <text x={x + width / 2} y={y} fill={Colors.White} textAnchor="middle" dy={-6}>{value}</text>;
+//     }
+// }
 
 function CustomTooltip({payload, label, active}: any) { // See same NOTE above - https://recharts.org/en-US/guide/customize
     if(active) {
+        console.log(payload)
         return (
             <TooltipContainer>
                 <TooltipText>{payload[0].value}</TooltipText>
@@ -68,22 +59,17 @@ function CustomTooltip({payload, label, active}: any) { // See same NOTE above -
     return null
 }
 
-const ForecastGraph = ({data}: {data: Array<DataItem>}) => {
+const ForecastGraph = ({data, dataKey}: {data: Array<DataItem>, dataKey: string}) => {
     const date = new Date()
-    const [currentHour, setCurrentHour] = useState(date.getHours())
+    const [currentHour] = useState(date.getHours())    
 
     return (
         <GraphContainer>
             <ResponsiveContainer width="99%" height="100%">
                 <BarChart data={data}>
-                    <XAxis dataKey="name" stroke={Colors.LightGray} axisLine={false} tickMargin={6} ticks={xticks} minTickGap={0}/>
+                    <XAxis dataKey="name" stroke={Colors.White} axisLine={false} tickMargin={6} minTickGap={-1}/>
                     <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="value" fill={Colors.LightGray} barSize={10} label={renderCustomBarLabel}>
-                        {
-                            data.map((entry, index) => (
-                                <Cell fill={index === currentHour ? Colors.White : Colors.LightGray} key={'cell-${index}'}/>
-                            ))
-                        }
+                    <Bar dataKey={dataKey} fill={Colors.White} barSize={10}>
                     </Bar>
                 </BarChart>
             </ResponsiveContainer>
@@ -113,35 +99,35 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
         setIsShowingHistogram(!isShowingHistogram);
     }
     
-    let backgroundColor: string = ''
     let labelString: string = ''
+    let dataKey: string =''
 
     switch (type) {
         case ItemType.TEMP:
             labelString = "Forecast Temp. (°F)"
-            backgroundColor = Colors.Obsidian;
+            dataKey = 'temp'
             break
 
         case ItemType.HUMIDITY:
             labelString = "Forecast Humidity (%)"
-            backgroundColor = Colors.LightishBlue;
+            dataKey = 'humidity'
             break
 
         case ItemType.WIND:
             labelString = "Forecast Wind Speed (mph)"
-            backgroundColor = Colors.LightGray
+            dataKey = 'wind'
             break
         
         case ItemType.PRECIP:
             labelString = "Forecast Precipitation (in.)"
-            backgroundColor = Colors.RainBlue
+            dataKey = 'precip'
             break
     }
 
     return (
         <WeatherItem>
             {!isShowingHistogram && <MinMax min={min} max={max}></MinMax>}
-            {isShowingHistogram && <ForecastGraph data={data}/> }
+            {isShowingHistogram && <ForecastGraph data={data} dataKey={dataKey}/> }
             <DarkLabelButtonContainer>
                 <SmallWhiteText style={{gridArea: "label"}}>{labelString}</SmallWhiteText>
                 <SmallBlueTextButton style={{gridArea: "button"}} onClick={showHistogramClicked}>
@@ -152,13 +138,77 @@ const PanelItem = ({min, max, data, type}: {min: number, max: number, data: Arra
     )
 }
 
-export const WeatherPanel = () => {
-    return (
+export const WeatherPanel = ({ city }: { city: string }) => {
+    const [isLoading, setIsLoading] = useState(true)
+    const [data, setData] = useState<DataItem[]>([])
+
+    const [minTemp, setMinTemp] = useState(Number.POSITIVE_INFINITY)
+    const [maxTemp, setMaxTemp] = useState(Number.NEGATIVE_INFINITY)
+    const [minWind, setMinWind] = useState(0)
+    const [maxWind, setMaxWind] = useState(0)
+    const [minPrecip, setMinPrecip] = useState(0)
+    const [maxPrecip, setMaxPrecip] = useState(0)
+    const [minHumidity, setMinHumidity] = useState(0)
+    const [maxHumidity, setMaxHumidity] = useState(0)
+
+
+    useEffect(() => {
+        const getHourlyData = async () => {
+            setIsLoading(true)
+
+            console.log('getting hourly data')
+            const response = await fetch(
+                `http://localhost:5000/hourly/${city.toLowerCase()}`
+            )
+            const res = await response.json()
+            console.log(res)
+            
+            var objArray: DataItem[] = []
+
+            res.slice(0, 23).map((i: HourlyData, index: number) => {
+                console.log(i.time)
+                var date = new Date(i.time * 1000)
+                var hour = date.getHours().toString()
+                
+                var myObj = { name: hour, precip: i.rain + i.snow, temp: i.temp, humidity: i.humidity, wind: i.windspeed }
+
+                objArray.push(myObj)
+            }) 
+
+            console.log(objArray)
+
+            objArray.forEach(obj => {
+                var temp = obj.temp
+                var humid = obj.humidity
+                var precip = obj.precip
+                var wind = obj.wind
+
+                console.log(obj)
+                if(temp < minTemp) {
+                    console.log('min temp', temp)
+                    setMinTemp(temp);
+                }
+
+                if(temp > maxTemp) {
+                    console.log('max temp', temp)
+                    setMaxTemp(temp);
+                }
+            })
+
+            setIsLoading(false)
+            setData(objArray)
+        }
+
+        getHourlyData()
+    }, [city])
+
+    return !isLoading ? (
         <DashPanel dashLocation={'weather'} dashName={'Weather Report'}>
-            <PanelItem data={temp_data} type={ItemType.TEMP} min={12} max={85}/>
-            <PanelItem data={temp_data} type={ItemType.PRECIP} min={1} max={5}/>
-            <PanelItem data={temp_data} type={ItemType.WIND} min={12} max={85}/>
-            <PanelItem data={temp_data} type={ItemType.HUMIDITY} min={40} max={80}/>
+            <PanelItem data={data} type={ItemType.TEMP} min={minTemp} max={maxTemp}/>
+            <PanelItem data={data} type={ItemType.PRECIP} min={1} max={5}/>
+            <PanelItem data={data} type={ItemType.WIND} min={12} max={85}/>
+            <PanelItem data={data} type={ItemType.HUMIDITY} min={40} max={80}/>
         </DashPanel>
-    )
+    ) : <DashPanel dashLocation={'weather'} dashName={'Weather Report'}></DashPanel>
+
 }
