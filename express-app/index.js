@@ -2,9 +2,13 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const path = require("path");
+
 require("dotenv").config();
 // Route constants
 const users = require("./routes/users");
+const bets = require("./routes/bets");
 const hourly = require("./routes/hourly");
 const daily = require("./routes/daily");
 
@@ -29,8 +33,11 @@ app.use(function (req, res, next) {
 	next();
 });
 
+app.use(bodyParser.json());
+
 // Routing
 app.use("/api/users", users);
+app.use("/api/bets", bets);
 app.use("/hourly", hourly);
 app.use("/daily", daily);
 
