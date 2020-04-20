@@ -47,8 +47,15 @@ const Odds = ({ under, over }: { under: number; over: number }) => {
     )
 }
 
-const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
+const PanelItem = ({
+    type,
+    weatherData,
+}: {
+    type: ItemType
+    weatherData: WeatherData
+}) => {
     const [isShowingOdds, setIsShowingOdds] = useState(false)
+    const { val, oddsUnder, oddsOver } = weatherData
 
     const showOddsClicked = () => {
         setIsShowingOdds(!isShowingOdds)
@@ -90,26 +97,36 @@ const PanelItem = ({ val: temp, type }: { val: number; type: ItemType }) => {
     return (
         <OddsItem>
             <SingleNumberBox style={{ backgroundColor: backgroundColor }}>
-                {temp}
+                {val}
             </SingleNumberBox>
             <DarkLabel>{labelString}</DarkLabel>
             <BlueTextButton onClick={showOddsClicked}>
                 {isShowingOdds ? 'Hide Odds' : 'Show Odds'}
             </BlueTextButton>
-            {isShowingOdds && <Odds under={-100} over={100} />}
+            {isShowingOdds && <Odds under={oddsUnder} over={oddsOver} />}
         </OddsItem>
     )
+}
+
+const calculateOdds = (val: number) => {
+    return { oddsUnder: -100, oddsOver: 100 }
 }
 
 export const OddsPanel = ({ city }: { city: string }) => {
     const [isLoading, setIsLoading] = useState(true)
 
     // WEATHER DATA
-    const [minTempVal, setMinTempVal] = useState<number>(0)
-    const [maxTempVal, setMaxTempVal] = useState<number>(0)
-    const [precipVal, setPrecipVal] = useState<number>(0)
-    const [windVal, setWindVal] = useState<number>(0)
-    const [humidityVal, setHumidityVal] = useState<number>(0)
+    const defaultWeatherData: WeatherData = {
+        val: -999,
+        oddsUnder: -999,
+        oddsOver: -999,
+    }
+
+    const [minTempData, setMinTempData] = useState(defaultWeatherData)
+    const [maxTempData, setMaxTempData] = useState(defaultWeatherData)
+    const [precipData, setPrecipData] = useState(defaultWeatherData)
+    const [windData, setWindData] = useState(defaultWeatherData)
+    const [humidityData, setHumidityData] = useState(defaultWeatherData)
 
     useEffect(() => {
         const getWeatherData = async () => {
@@ -124,19 +141,59 @@ export const OddsPanel = ({ city }: { city: string }) => {
             const data = await response.json()
             const forecast = data.nextDayForecast
 
-            setMinTempVal(forecast.min_temp)
-            setMaxTempVal(forecast.max_temp)
-            setWindVal(forecast.windspeed)
-            setHumidityVal(-99)
+            const minTempOdds = calculateOdds(forecast.min_temp)
+            setMinTempData({
+                val: forecast.min_temp,
+                oddsUnder: minTempOdds.oddsUnder,
+                oddsOver: minTempOdds.oddsOver,
+            })
 
+            const maxTempOdds = calculateOdds(forecast.max_temp)
+            setMaxTempData({
+                val: forecast.max_temp,
+                oddsUnder: maxTempOdds.oddsUnder,
+                oddsOver: maxTempOdds.oddsOver,
+            })
+
+            const windOdds = calculateOdds(forecast.windspeed)
+            setWindData({
+                val: forecast.windspeed,
+                oddsUnder: windOdds.oddsUnder,
+                oddsOver: windOdds.oddsOver,
+            })
+
+            const humidityOdds = calculateOdds(forecast.humidity)
+            setHumidityData({
+                val: forecast.humidity,
+                oddsUnder: humidityOdds.oddsUnder,
+                oddsOver: humidityOdds.oddsOver,
+            })
+
+            const precipOdds = calculateOdds(forecast.rain + forecast.snow)
             if (forecast.rain !== 0 && forecast.snow !== 0) {
-                setPrecipVal(forecast.rain + forecast.snow)
+                setPrecipData({
+                    val: forecast.rain + forecast.snow,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
             } else if (forecast.rain !== 0) {
-                setPrecipVal(forecast.rain)
+                setPrecipData({
+                    val: forecast.rain,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
             } else if (forecast.snow !== 0) {
-                setPrecipVal(forecast.snow)
+                setPrecipData({
+                    val: forecast.snow,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
             } else {
-                setPrecipVal(0)
+                setPrecipData({
+                    val: 0,
+                    oddsUnder: precipOdds.oddsUnder,
+                    oddsOver: precipOdds.oddsOver,
+                })
             }
 
             setIsLoading(false)
@@ -147,11 +204,11 @@ export const OddsPanel = ({ city }: { city: string }) => {
 
     return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
-            <PanelItem val={minTempVal} type={ItemType.MINTEMP} />
-            <PanelItem val={maxTempVal} type={ItemType.MAXTEMP} />
-            <PanelItem val={precipVal} type={ItemType.PRECIP} />
-            <PanelItem val={windVal} type={ItemType.WIND} />
-            <PanelItem val={humidityVal} type={ItemType.HUMIDITY} />
+            <PanelItem weatherData={minTempData} type={ItemType.MINTEMP} />
+            <PanelItem weatherData={maxTempData} type={ItemType.MAXTEMP} />
+            <PanelItem weatherData={precipData} type={ItemType.PRECIP} />
+            <PanelItem weatherData={windData} type={ItemType.WIND} />
+            <PanelItem weatherData={humidityData} type={ItemType.HUMIDITY} />
         </DashPanel>
     ) : (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
@@ -160,4 +217,10 @@ export const OddsPanel = ({ city }: { city: string }) => {
             </LoaderContainer>
         </DashPanel>
     )
+}
+
+interface WeatherData {
+    val: number
+    oddsUnder: number
+    oddsOver: number
 }
