@@ -4,13 +4,13 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors')
+
 
 require('dotenv').config()
 // Route constants
 const users = require('./routes/users');
 const tweets = require('./routes/tweets');
-const path = require('path')
-const cors = require('cors')
 
 
 //-----------------------------------
