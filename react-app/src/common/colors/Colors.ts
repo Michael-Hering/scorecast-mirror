@@ -12,6 +12,7 @@ export const Colors = {
     PendingGray: '#6D6D6D', //used in profile
     WinGreen: '#222C1F', //used in profile
     LossRed: '#452020', //used in profile
+    BrightGreen: '#14FF00', // used for bet placed text
     White: '#FFFFFF',
     Black: '#000000',
 }

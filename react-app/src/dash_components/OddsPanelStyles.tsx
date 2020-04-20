@@ -51,3 +51,7 @@ export const OddsLoadingContainer = styled.div`
     display: grid;
     place-items: center center;
 `
+
+export const BetPlacedText = styled.div`
+    color: ${Colors.BrightGreen};
+`

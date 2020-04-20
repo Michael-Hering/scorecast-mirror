@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DashPanel } from 'dash_components/DashPanel'
 import { Colors } from 'common/colors/Colors'
 import Loader from 'react-spinners/PulseLoader'
@@ -8,6 +8,7 @@ import {
     OddsContainer,
     OddsElement,
     OddsLoadingContainer,
+    BetPlacedText,
 } from 'dash_components/OddsPanelStyles'
 
 import {
@@ -37,10 +38,17 @@ const Odds = ({
     over: number
     weatherData: WeatherData
 }) => {
+    const { isAuthenticated, loginWithRedirect, user } = useAuth0()
+
     const [betPlaced, setBetPlaced] = useState<boolean>(false)
     const [betSending, setBetSending] = useState<boolean>(false)
 
     const placeBetClicked = async (odds: number, type: string) => {
+        if (!isAuthenticated) {
+            loginWithRedirect()
+            return
+        }
+
         setBetPlaced(true)
         setBetSending(true)
 
@@ -48,9 +56,9 @@ const Odds = ({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                email: weatherData.city,
+                email: user.email,
                 city: weatherData.city,
-                date: new Date(),
+                date: new Date().getTime(),
                 type: type,
                 odds: odds,
                 val: weatherData.val,
@@ -59,14 +67,16 @@ const Odds = ({
             }),
         }
 
-        // const response = await fetch(
-        //     'http://localhost:5000/api/tweets',
-        //     requestOptions
-        // )
+        const response = await fetch(
+            `http://localhost:5000/api/bets`,
+            requestOptions
+        )
         // const data: any[] = await response.json()
 
         console.log(`Placing bet:`)
-        console.log(requestOptions)
+        console.log(requestOptions.body)
+        // console.log(data)
+        setBetSending(false)
     }
 
     const placedUnder = () => {
@@ -98,9 +108,15 @@ const Odds = ({
                 </>
             ) : (
                 <OddsLoadingContainer>
-                    betSending ? (
-                    <Loader size={10} margin={5} color={Colors.BrightBlue} />) :
-                    (<LargeWhiteText>Bet Placed!</LargeWhiteText>)
+                    {betSending ? (
+                        <Loader
+                            size={10}
+                            margin={5}
+                            color={Colors.BrightBlue}
+                        />
+                    ) : (
+                        <BetPlacedText>Bet Placed!</BetPlacedText>
+                    )}
                 </OddsLoadingContainer>
             )}
         </OddsContainer>
@@ -334,7 +350,7 @@ export const OddsPanel = ({ city }: { city: string }) => {
         }
 
         getWeatherData()
-    }, [city])
+    }, [city, user])
 
     return !isLoading ? (
         <DashPanel dashLocation={'odds'} dashName={"Today's Lines"}>
