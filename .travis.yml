@@ -1,15 +1,19 @@
 language: node_js
 
+env:
+    global:
+        - NODE_OPTIONS="--experimental_worker"
+
 node_js:
-  - "10"
+    - "10"
 
 cache:
-  directories:
-    - node_modules
+    directories:
+        - node_modules
 
 before_install:
-  - cd react-app
-  - yarn install
+    - cd react-app
+    - yarn install
 
 script:
-  - yarn test
+    - yarn test

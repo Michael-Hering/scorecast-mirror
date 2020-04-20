@@ -9,6 +9,9 @@ export const Colors = {
     RainBlue: '#184C69', //used for precipitation
     LightGray: '#585858', //used for wind speed
     LightishBlue: '#3A4184', //used for humidity
+    PendingGray: '#6D6D6D', //used in profile
+    WinGreen: '#222C1F', //used in profile
+    LossRed: '#452020', //used in profile
     White: '#FFFFFF',
     Black: '#000000',
 }
