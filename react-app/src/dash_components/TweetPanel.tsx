@@ -43,7 +43,11 @@ export const TweetPanel = ({ city }: Props) => {
                         <TwitterTweetEmbed
                             tweetId={element.id_str}
                             key={uuid()}
-                            options={{ theme: 'light', width: maxTweetWidth }}
+                            options={{
+                                theme: 'light',
+                                width: maxTweetWidth,
+                                cards: 'hidden',
+                            }}
                         />
                     </TweetBox>
                 )
