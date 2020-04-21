@@ -26,9 +26,9 @@ export const ValBox = styled.div`
     display: grid;
     place-items: center center;
 
-    -webkit-text-stroke: 2.5px black;
+    /* -webkit-text-stroke: 1px black; */
 
-    font-size: 50px;
+    font-size: 30px;
 
     background-color: ${Colors.Obsidian};
     color: ${Colors.White};
