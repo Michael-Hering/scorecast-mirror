@@ -12,7 +12,7 @@ import json
 def updateBetStatus(db, bet, status):
   bets_collection = db['bets']
   bets_collection.find_one_and_update(
-    {"id": bet["id"]}, 
+    {"_id": bet["_id"]}, 
     {"$set": {"status": status}}
   )
   return
@@ -108,6 +108,21 @@ def getTotalPrecip(date, city, historical_data):
   return total_precip
 
 
+def getMaxHumid(date, city, historical_data):
+  max_humid = 0
+  for weather_snapshot in historical_data:
+    # Check date
+    snapshot_date = datetime.utcfromtimestamp(int(weather_snapshot[city]["dt"])).date().strftime("%Y-%m-%d")
+    if snapshot_date == date:
+      # Check Humid
+      current_humid = int(weather_snapshot[city]["humidity"])
+      if current_humid > max_humid:
+        max_humid = current_humid
+
+  print("actual max humidity: " + str(max_humid))
+  return max_humid
+
+
 '''
     args: 
         bets: list of bet documents
@@ -124,7 +139,7 @@ def processBets(db, bets, historical_data):
 
         # Get a string representing the city and date the bet was placed for
         bet_city = bet["city"]
-        bet_date = datetime.utcfromtimestamp(int(bet["date"])).date().strftime("%Y-%m-%d")
+        bet_date = datetime.utcfromtimestamp((int(bet["date"]))/1000).date().strftime("%Y-%m-%d")
 
         print("processing bet", bet["type"], bet["weatherFeature"], bet["val"], "for", bet["city"], "on " + bet_date)
 
@@ -179,17 +194,30 @@ def processBets(db, bets, historical_data):
           else:
             print("LOSS")
             updateBetStatus(db, bet, "loss")
+        
+        elif bet["weatherFeature"] == "humidity":
+          
+          # Get the total humidity for bet_city on bet_date
+          max_humidity = getMaxHumid(bet_date, bet_city, historical_data)
+          
+          # Check if they won
+          if bet["type"] == "over" and max_humidity > bet["val"] or bet["type"] == "under" and max_humidity < bet["val"]:
+            print("WIN")
+            updateBetStatus(db, bet, "win")
+          else:
+            print("LOSS")
+            updateBetStatus(db, bet, "loss")
 
     return
 
 
 def main():
-    with open('./secrets.json') as f:
-        secrets = json.load(f)
+    # with open('./secrets.json') as f:
+    #     secrets = json.load(f)
 
     # Open client and get collections
     local_uri = 'mongodb://localhost:27017/'
-    atlas_uri = secrets['mongo_uri']
+    atlas_uri = 'mongodb+srv://dbUser:lHHRGsTDThtYq8zs@scorecast-cluster-iyipd.gcp.mongodb.net/test?retryWrites=true&w=majority'
     myclient = pymongo.MongoClient(atlas_uri)
     mydb = myclient['scorecast']
 
