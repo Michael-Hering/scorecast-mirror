@@ -17,7 +17,7 @@ export const TweetPanel = ({ city }: Props) => {
 
     useEffect(() => {
         const getTweets = async () => {
-            setIsLoading(true)
+            // setIsLoading(true)
 
             const tweetsArray: ReactNode[] = []
 
@@ -43,28 +43,38 @@ export const TweetPanel = ({ city }: Props) => {
                         <TwitterTweetEmbed
                             tweetId={element.id_str}
                             key={uuid()}
-                            options={{ theme: 'light', width: maxTweetWidth }}
+                            options={{
+                                theme: 'light',
+                                width: maxTweetWidth,
+                                cards: 'hidden',
+                            }}
+                            onLoad={() => {
+                                if (i === data.length - 1) {
+                                    setIsLoading(false)
+                                }
+                            }}
                         />
                     </TweetBox>
                 )
             }
-
             setTweets(tweetsArray)
-            setIsLoading(false)
         }
 
         getTweets()
     }, [city])
 
-    return !isLoading ? (
+    return (
         <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
-            <TweetsContainer>{tweets}</TweetsContainer>
-        </DashPanel>
-    ) : (
-        <DashPanel dashLocation={'twitter'} dashName={'Live Tweets'}>
-            <LoaderContainer ref={ref}>
-                <Loader size={20} margin={10} color={Colors.White} />
-            </LoaderContainer>
+            {isLoading ? (
+                <LoaderContainer ref={ref}>
+                    <Loader size={20} margin={10} color={Colors.White} />
+                    <TweetsContainer style={{ display: 'none' }}>
+                        {tweets}
+                    </TweetsContainer>
+                </LoaderContainer>
+            ) : (
+                <TweetsContainer>{tweets}</TweetsContainer>
+            )}
         </DashPanel>
     )
 }
