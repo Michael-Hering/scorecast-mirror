@@ -107,7 +107,12 @@ def getTotalPrecip(date, city, historical_data):
   print("actual total precip: " + str(total_precip))
   return total_precip
 
-
+'''
+    args: 
+        city: the city to return a value for
+        date: the date to calculate values on
+        historical_data: list of historical documents
+'''
 def getMaxHumid(date, city, historical_data):
   max_humid = 0
   for weather_snapshot in historical_data:
@@ -212,13 +217,12 @@ def processBets(db, bets, historical_data):
 
 
 def main():
-    # with open('./secrets.json') as f:
-    #     secrets = json.load(f)
-
     # Open client and get collections
-    local_uri = 'mongodb://localhost:27017/'
-    atlas_uri = 'mongodb+srv://dbUser:lHHRGsTDThtYq8zs@scorecast-cluster-iyipd.gcp.mongodb.net/test?retryWrites=true&w=majority'
-    myclient = pymongo.MongoClient(atlas_uri)
+    # use atlas if testing locally....uri found at mongodb console
+    # atlas_uri = 
+    #myclient = pymongo.MongoClient(atlas_uri)
+    
+    myclient = pymongo.MongoClient(os.environ.get('MONGO_URI', 'Mongo URI var is not set.'))
     mydb = myclient['scorecast']
 
     bets_collection = mydb['bets']
