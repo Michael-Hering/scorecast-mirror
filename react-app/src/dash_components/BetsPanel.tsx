@@ -14,6 +14,8 @@ import {
 } from 'dash_components/BetsPanelStyles'
 import BetLine from 'common/assets/BetLine.png'
 import { useAuth0 } from 'react-auth0-spa'
+import Loader from 'react-spinners/PulseLoader'
+import { LoaderContainer } from './PanelStyles'
 
 // TEMP BETS
 const bets = [
@@ -160,7 +162,10 @@ const convertBetsToJSX = (bets: BetsData[]) => {
                             element.val}
                     </LargeWhiteText>
                     <SmallWhiteText>
-                        {new Date(element.date).toLocaleDateString()}
+                        {'Placed on ' +
+                            new Date(
+                                parseInt(element.date)
+                            ).toLocaleDateString()}
                     </SmallWhiteText>
                 </BetText>
             </BetsItem>
@@ -171,16 +176,19 @@ const convertBetsToJSX = (bets: BetsData[]) => {
 }
 
 export const BetsPanel = ({ email }: { email: string }) => {
+    const [isLoading, setIsLoading] = useState(true)
     const [betItems, setBetItems] = useState<ReactNode[]>()
     const { isAuthenticated } = useAuth0()
 
     useEffect(() => {
         const getBets = async () => {
+            setIsLoading(true)
             const response = await fetch(
                 `http://localhost:5000/api/bets/${email}`
             )
             const data: BetsData[] = await response.json()
             setBetItems(convertBetsToJSX(data))
+            setIsLoading(false)
         }
 
         if (isAuthenticated && email !== 'nouser') {
@@ -191,16 +199,22 @@ export const BetsPanel = ({ email }: { email: string }) => {
         }
     }, [email, isAuthenticated])
 
-    return (
+    return !isLoading ? (
         <DashPanel dashLocation={'bets'} dashName={'Your Bets'}>
             {betItems}
+        </DashPanel>
+    ) : (
+        <DashPanel dashLocation={'bets'} dashName={'Your Bets'}>
+            <LoaderContainer>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
         </DashPanel>
     )
 }
 
 interface Bet {
     _id?: string
-    date: Date // Date the bet was for (tomorrow)
+    date: string // Date the bet was for (tomorrow)
     type: string // "OVER"/"UNDER"
     odds: number // i.e. -100
     val: number // i.e. 44
