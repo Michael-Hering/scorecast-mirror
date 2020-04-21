@@ -13,19 +13,12 @@ import {
     BetText,
 } from 'dash_components/BetsPanelStyles'
 import BetLine from 'common/assets/BetLine.png'
-
-interface Bet {
-    betID: string // uuid for bet identification (optional)
-    date: Date // Date the bet was for (tomorrow)
-    type: string // "OVER"/"UNDER"
-    odds: number // i.e. -100
-    val: number // i.e. 44
-    weatherFeature: string // i.e. "Max Temp"
-    status: string // "PENDING"/"WIN"/"LOSS"
-}
+import { useAuth0 } from 'react-auth0-spa'
+import Loader from 'react-spinners/PulseLoader'
+import { LoaderContainer } from './PanelStyles'
 
 // TEMP BETS
-const bets: Bet[] = [
+const bets = [
     {
         betID: 'test',
         date: new Date(),
@@ -82,33 +75,37 @@ const bets: Bet[] = [
     },
 ]
 
-const convertBetsToJSX = (bets: Bet[]) => {
+const convertBetsToJSX = (bets: BetsData[]) => {
     const betItems: ReactNode[] = []
 
     for (let i = 0; i < bets.length; i++) {
-        const element = bets[i]
-        let weatherColor
-        let statusColor
+        const element = bets[i][0]
+        let weatherColor, statusColor, weatherFeature, statusText
 
         switch (element.weatherFeature) {
-            case 'Min Temp':
+            case 'minTemp':
                 weatherColor = Colors.LowTempBlue
+                weatherFeature = 'Min Temp.'
                 break
 
-            case 'Max Temp':
+            case 'maxTemp':
                 weatherColor = Colors.MaxTempRed
+                weatherFeature = 'Max Temp.'
                 break
 
-            case 'Total Precip':
+            case 'totalPrecip':
                 weatherColor = Colors.RainBlue
+                weatherFeature = 'Total Precip.'
                 break
 
-            case 'Wind Speed':
+            case 'maxWind':
                 weatherColor = Colors.LightGray
+                weatherFeature = 'Max Wind'
                 break
 
-            case 'Humidity':
+            case 'humidity':
                 weatherColor = Colors.LightishBlue
+                weatherFeature = 'Humidity'
                 break
 
             default:
@@ -117,16 +114,19 @@ const convertBetsToJSX = (bets: Bet[]) => {
         }
 
         switch (element.status) {
-            case 'WIN':
+            case 'win':
                 statusColor = Colors.WinGreen
+                statusText = 'WIN'
                 break
 
-            case 'LOSS':
+            case 'loss':
                 statusColor = Colors.LossRed
+                statusText = 'LOSS'
                 break
 
-            case 'PENDING':
+            case 'pending':
                 statusColor = Colors.PendingGray
+                statusText = 'PENDING'
                 break
 
             default:
@@ -151,18 +151,21 @@ const convertBetsToJSX = (bets: Bet[]) => {
                     />
                 </LineBox>
                 <StatusBox style={{ backgroundColor: statusColor }}>
-                    {element.status}
+                    {statusText}
                 </StatusBox>
                 <BetText>
                     <LargeWhiteText>
-                        {element.weatherFeature +
+                        {weatherFeature +
                             ' ' +
-                            element.type +
+                            element.type.toUpperCase() +
                             ' ' +
                             element.val}
                     </LargeWhiteText>
                     <SmallWhiteText>
-                        {element.date.toLocaleDateString()}
+                        {'Placed on ' +
+                            new Date(
+                                parseInt(element.date)
+                            ).toLocaleDateString()}
                     </SmallWhiteText>
                 </BetText>
             </BetsItem>
@@ -172,21 +175,53 @@ const convertBetsToJSX = (bets: Bet[]) => {
     return betItems
 }
 
-export const BetsPanel = () => {
+export const BetsPanel = ({ email }: { email: string }) => {
+    const [isLoading, setIsLoading] = useState(true)
     const [betItems, setBetItems] = useState<ReactNode[]>()
+    const { isAuthenticated } = useAuth0()
 
     useEffect(() => {
         const getBets = async () => {
-            const userBets = await bets // TODO: replace with API call
-            setBetItems(convertBetsToJSX(userBets))
+            setIsLoading(true)
+            const response = await fetch(
+                `http://localhost:5000/api/bets/${email}`
+            )
+            const data: BetsData[] = await response.json()
+            setBetItems(convertBetsToJSX(data))
+            setIsLoading(false)
         }
 
-        getBets()
-    }, [])
+        if (isAuthenticated && email !== 'nouser') {
+            getBets()
+        } else {
+            console.log(`auth? ${isAuthenticated}`)
+            console.log(`email? ${email}`)
+        }
+    }, [email, isAuthenticated])
 
-    return (
+    return !isLoading ? (
         <DashPanel dashLocation={'bets'} dashName={'Your Bets'}>
             {betItems}
         </DashPanel>
+    ) : (
+        <DashPanel dashLocation={'bets'} dashName={'Your Bets'}>
+            <LoaderContainer>
+                <Loader size={20} margin={10} color={Colors.White} />
+            </LoaderContainer>
+        </DashPanel>
     )
+}
+
+interface Bet {
+    _id?: string
+    date: string // Date the bet was for (tomorrow)
+    type: string // "OVER"/"UNDER"
+    odds: number // i.e. -100
+    val: number // i.e. 44
+    weatherFeature: string // i.e. "Max Temp"
+    status: string // "PENDING"/"WIN"/"LOSS"
+}
+
+interface BetsData {
+    [index: number]: Bet
 }

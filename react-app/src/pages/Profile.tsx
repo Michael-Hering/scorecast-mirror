@@ -104,12 +104,12 @@ const SettingsPanel = () => {
 }
 
 export const Profile = () => {
-    const { isAuthenticated } = useAuth0()
+    const { isAuthenticated, user } = useAuth0()
 
     return isAuthenticated ? (
         <ProfileContainer>
             <TopBar />
-            <BetsPanel />
+            <BetsPanel email={user ? user.email : 'nouser'} />
             <ProfilePanel />
             <SettingsPanel />
         </ProfileContainer>
