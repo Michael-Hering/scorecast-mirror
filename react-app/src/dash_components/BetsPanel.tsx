@@ -139,9 +139,6 @@ export const BetsPanel = ({ email }: { email: string }) => {
 
         if (isAuthenticated && email !== 'nouser') {
             getBets()
-        } else {
-            console.log(`auth? ${isAuthenticated}`)
-            console.log(`email? ${email}`)
         }
     }, [email, isAuthenticated])
 
