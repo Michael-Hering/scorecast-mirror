@@ -67,7 +67,12 @@ const Odds = ({
             }),
         }
 
-        await fetch(`http://localhost:5000/api/bets`, requestOptions)
+        const apiUrl =
+            window.location.protocol === 'https:'
+                ? `https://localhost:5000/api/bets`
+                : `http://localhost:5000/api/bets`
+
+        await fetch(apiUrl, requestOptions)
 
         setBetSending(false)
     }
@@ -240,9 +245,13 @@ export const OddsPanel = ({ city }: { city: string }) => {
             // console.log(
             //     `Getting weather data: http://localhost:5000/daily/${city.toLowerCase()}`
             // )
-            const response = await fetch(
-                `http://localhost:5000/daily/${city.toLowerCase()}`
-            )
+
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/daily/${city.toLowerCase()}`
+                    : `http://localhost:5000/daily/${city.toLowerCase()}`
+
+            const response = await fetch(apiUrl)
             const data = await response.json()
             const forecast = data.nextDayForecast
 

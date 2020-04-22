@@ -200,9 +200,13 @@ export const WeatherPanel = ({ city }: { city: string }) => {
             setIsLoading(true)
 
             // console.log('getting hourly data')
-            const response = await fetch(
-                `http://localhost:5000/hourly/${city.toLowerCase()}`
-            )
+
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/hourly/${city.toLowerCase()}`
+                    : `http://localhost:5000/hourly/${city.toLowerCase()}`
+
+            const response = await fetch(apiUrl)
             const res = await response.json()
 
             var objArray: DataItem[] = []

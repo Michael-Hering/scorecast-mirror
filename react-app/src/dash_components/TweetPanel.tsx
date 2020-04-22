@@ -27,16 +27,26 @@ export const TweetPanel = ({ city }: Props) => {
                 body: JSON.stringify({ topic: city }),
             }
 
-            const response = await fetch(
-                'http://localhost:5000/api/tweets',
-                requestOptions
-            )
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/api/tweets`
+                    : `http://localhost:5000/api/tweets`
+
+            const response = await fetch(apiUrl, requestOptions)
             const data: any[] = await response.json()
 
             let maxTweetWidth = ref.current ? ref.current.offsetWidth : 10
             maxTweetWidth = maxTweetWidth > 500 ? 500 : maxTweetWidth
 
-            for (let i = 0; i < data.length; i++) {
+            let maxTweetNum = 20
+
+            for (let i = data.length - 1; i > 0; i--) {
+                if (maxTweetNum > 0) {
+                    maxTweetNum--
+                } else {
+                    break
+                }
+
                 const element = JSON.parse(data[i])
                 tweetsArray.push(
                     <TweetBox key={uuid()} style={{ width: maxTweetWidth }}>

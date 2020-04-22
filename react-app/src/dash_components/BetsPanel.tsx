@@ -17,64 +17,6 @@ import { useAuth0 } from 'react-auth0-spa'
 import Loader from 'react-spinners/PulseLoader'
 import { LoaderContainer } from './PanelStyles'
 
-// TEMP BETS
-const bets = [
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 67,
-        weatherFeature: 'Total Precip',
-        status: 'PENDING',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 44,
-        weatherFeature: 'Max Temp',
-        status: 'WIN',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'UNDER',
-        odds: 100,
-        val: 72,
-        weatherFeature: 'Min Temp',
-        status: 'LOSS',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 67,
-        weatherFeature: 'Total Precip',
-        status: 'PENDING',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 44,
-        weatherFeature: 'Max Temp',
-        status: 'WIN',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'UNDER',
-        odds: 100,
-        val: 72,
-        weatherFeature: 'Min Temp',
-        status: 'LOSS',
-    },
-]
-
 const convertBetsToJSX = (bets: BetsData[]) => {
     const betItems: ReactNode[] = []
 
@@ -183,9 +125,13 @@ export const BetsPanel = ({ email }: { email: string }) => {
     useEffect(() => {
         const getBets = async () => {
             setIsLoading(true)
-            const response = await fetch(
-                `http://localhost:5000/api/bets/${email}`
-            )
+
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/api/bets/${email}`
+                    : `http://localhost:5000/api/bets/${email}`
+
+            const response = await fetch(apiUrl)
             const data: BetsData[] = await response.json()
             setBetItems(convertBetsToJSX(data))
             setIsLoading(false)
@@ -193,9 +139,6 @@ export const BetsPanel = ({ email }: { email: string }) => {
 
         if (isAuthenticated && email !== 'nouser') {
             getBets()
-        } else {
-            console.log(`auth? ${isAuthenticated}`)
-            console.log(`email? ${email}`)
         }
     }, [email, isAuthenticated])
 
