@@ -36,7 +36,15 @@ export const TweetPanel = ({ city }: Props) => {
             let maxTweetWidth = ref.current ? ref.current.offsetWidth : 10
             maxTweetWidth = maxTweetWidth > 500 ? 500 : maxTweetWidth
 
-            for (let i = 0; i < data.length; i++) {
+            let maxTweetNum = 20
+
+            for (let i = data.length - 1; i > 0; i--) {
+                if (maxTweetNum > 0) {
+                    maxTweetNum--
+                } else {
+                    break
+                }
+
                 const element = JSON.parse(data[i])
                 tweetsArray.push(
                     <TweetBox key={uuid()} style={{ width: maxTweetWidth }}>
