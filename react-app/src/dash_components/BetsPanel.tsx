@@ -17,64 +17,6 @@ import { useAuth0 } from 'react-auth0-spa'
 import Loader from 'react-spinners/PulseLoader'
 import { LoaderContainer } from './PanelStyles'
 
-// TEMP BETS
-const bets = [
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 67,
-        weatherFeature: 'Total Precip',
-        status: 'PENDING',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 44,
-        weatherFeature: 'Max Temp',
-        status: 'WIN',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'UNDER',
-        odds: 100,
-        val: 72,
-        weatherFeature: 'Min Temp',
-        status: 'LOSS',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 67,
-        weatherFeature: 'Total Precip',
-        status: 'PENDING',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'OVER',
-        odds: -100,
-        val: 44,
-        weatherFeature: 'Max Temp',
-        status: 'WIN',
-    },
-    {
-        betID: 'test',
-        date: new Date(),
-        type: 'UNDER',
-        odds: 100,
-        val: 72,
-        weatherFeature: 'Min Temp',
-        status: 'LOSS',
-    },
-]
-
 const convertBetsToJSX = (bets: BetsData[]) => {
     const betItems: ReactNode[] = []
 
