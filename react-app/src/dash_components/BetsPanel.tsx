@@ -125,9 +125,13 @@ export const BetsPanel = ({ email }: { email: string }) => {
     useEffect(() => {
         const getBets = async () => {
             setIsLoading(true)
-            const response = await fetch(
-                `http://localhost:5000/api/bets/${email}`
-            )
+
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/api/bets/${email}`
+                    : `http://localhost:5000/api/bets/${email}`
+
+            const response = await fetch(apiUrl)
             const data: BetsData[] = await response.json()
             setBetItems(convertBetsToJSX(data))
             setIsLoading(false)

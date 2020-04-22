@@ -27,10 +27,12 @@ export const TweetPanel = ({ city }: Props) => {
                 body: JSON.stringify({ topic: city }),
             }
 
-            const response = await fetch(
-                'http://localhost:5000/api/tweets',
-                requestOptions
-            )
+            const apiUrl =
+                window.location.protocol === 'https:'
+                    ? `https://localhost:5000/api/tweets`
+                    : `http://localhost:5000/api/tweets`
+
+            const response = await fetch(apiUrl, requestOptions)
             const data: any[] = await response.json()
 
             let maxTweetWidth = ref.current ? ref.current.offsetWidth : 10
